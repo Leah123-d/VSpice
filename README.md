@@ -16,3 +16,4 @@ This project utilizes a backend server, created with Express.js. Making calls to
 | PostgreSQL | Database |
 | OpenAI | API / Tool |
 | AWS S3 | cloud storage |
+
