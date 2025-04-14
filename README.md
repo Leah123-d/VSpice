@@ -15,5 +15,4 @@ This project utilizes a backend server, created with Express.js. Making calls to
 | Node | Runtime Environment |
 | PostgreSQL | Database |
 | OpenAI | API / Tool |
-| GraphQL | Query Language / API Standard |
-| React Query Library | React Library |
+| AWS S3 | cloud storage |
