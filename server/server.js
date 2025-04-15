@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
-// import spicesRoute from './routes'
+import spicesRoute from './routes/spicesRoute.js'
 // import shoppingListRoute from './routes'
 // import usersRoute from './routes'
 import visionRoute from './routes/visiontempRoute.js'
@@ -13,7 +13,7 @@ dotenv.config();
 app.use(bodyParser.json()) 
 
 //to read the tables
-// app.use('/spices', spicesRoute); 
+app.use('/spices', spicesRoute); 
 // app.use('/shoppingList', shoppingListRoute); 
 // app.use('/users', usersRoute); 
 

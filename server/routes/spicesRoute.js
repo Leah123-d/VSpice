@@ -1,7 +1,7 @@
 import express from 'express';
 import{
-  getSpices,
   getSpice,
+  getSpices,
   createSpice,
   updateSpice,
   deleteSpice,
