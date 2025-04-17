@@ -1,11 +1,18 @@
 function CreateSpice(){
   return(
-      <form>
+   
+    <div className="flex align-middle justify-center">
+      <form >
         <label htmlFor="spiceImage">Spice Image Upload</label>
-        <div className="text-xl bg-gray-500 max-w-7xl max-h-7xl">
-        <input type="file" id="spiceImage"></input>
+        <div>
+        <input type="file" id="spiceImage" ></input>
+        </div>
+        <div>
+          <button className="outline-2 rounded-md p-2">upload</button>
         </div>
       </form>
+      </div>
+
   )
 }
 
