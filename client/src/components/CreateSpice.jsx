@@ -1,3 +1,4 @@
+//adjust to use, use reducer
 function CreateSpice(){
   return(
    
