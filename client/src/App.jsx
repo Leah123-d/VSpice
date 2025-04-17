@@ -1,23 +1,28 @@
+//To-Do: 
+  //Set-up React Routing
+
 import { useState } from 'react'
 import './styles.css'
 import CreateSpice  from './components/CreateSpice'
 
 function App() {
-  const [spiceImage, setSpiceImage] = useState(null);
 
-  const createSpice = async (formData) => {
+  const [spiceAnalyze, setSpiceAnalyze] = useState(null);
+  const [errorHandle, setErrorHandle] = useState(false);
+
+  const createNewSpice = async (formData) => {
     //we will pass the function to the component and get the information that way 
     console.log("image submitted:", formData);
 
     try {
       await fetch("/vision", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: formData,
       });
       const response = await fetch('/vision');
       const data = await response.json();
-      setSpiceImage(data);
+      setSpiceAnalyze(data);
+      
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -31,7 +36,7 @@ function App() {
   return (
     <div>
       <h1>Welcome to VSpice!</h1>
-      <CreateSpice />
+      <CreateSpice createNewSpice={createNewSpice}/>
     </div>
     
     
