@@ -11,13 +11,13 @@ import visionRoute from './routes/visiontempRoute.js'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const REACT_BUILD_DIR = path.join(__dirname, "..", "client", "dist");
+app.use(express.static(REACT_BUILD_DIR));
+
 const app = express();
 dotenv.config();
 
 app.use(bodyParser.json()) 
-
-const REACT_BUILD_DIR = path.join(__dirname, "..", "client", "dist");
-app.use(express.static(REACT_BUILD_DIR));
 
 //to read the tables
 app.use('/spices', spicesRoute); 
