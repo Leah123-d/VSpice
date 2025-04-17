@@ -20,8 +20,7 @@ export default defineConfig({
       '/shoppingLists': {
         target: 'http://localhost:3000',
         changeOrigin: true
-      }
-      ,
+      },
       '/vision': {
         target: 'http://localhost:3000',
         changeOrigin: true
@@ -30,4 +29,4 @@ export default defineConfig({
     }
   }
   
-})
+)
