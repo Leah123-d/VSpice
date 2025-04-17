@@ -1,10 +1,24 @@
 import dbConnection from '../db-connection.js';
 
 import fs from "fs";
+import multer from "multer";
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
 
 dotenv.config();
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public')
+  },
+  filename:(req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname)
+  }
+})
+
+const upload = ({storage: storage}).single('file');
+
+let filePath = "";
 
 
 // const imagePath = "/Users/leahputlek/Techtonica/01finalproject/VSpice/server/pumpkinSpice.jpeg"
@@ -17,6 +31,12 @@ const openai = new OpenAI({
 });
 
 export const analyzeImage = async (req, res) => {
+  upload(req, res, (err) => {
+    if(err){
+      return res.status(500).json(err)
+    }
+    filePath = req.file.path;
+  })
   const { image } = req.body;
   const base64Image = fs.readFileSync(imagePath, "base64");
 

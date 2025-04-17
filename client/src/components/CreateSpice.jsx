@@ -28,7 +28,7 @@ function CreateSpice({createNewSpice}){
   }
   return(
     <div className="flex align-middle justify-center">
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit} enctype="multipart/form-data">
         <label htmlFor="spiceImage">Spice Image Upload</label>
         <div>
         <input type="file" id="spiceImage" onChange={handleImageUpload}></input>

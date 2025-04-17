@@ -3,6 +3,8 @@ import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+
+
 import spicesRoute from './routes/spicesRoute.js'
 // import shoppingListRoute from './routes'
 // import usersRoute from './routes'
@@ -15,10 +17,10 @@ const __dirname = path.dirname(__filename);
 const REACT_BUILD_DIR = path.join(__dirname, "..", "client", "dist");
 app.use(express.static(REACT_BUILD_DIR));
 
-
 dotenv.config();
-
 app.use(bodyParser.json()) 
+
+
 
 //to read the tables
 app.use('/spices', spicesRoute); 
