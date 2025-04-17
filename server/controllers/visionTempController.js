@@ -6,8 +6,10 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const imagePath = "/Users/leahputlek/Techtonica/01finalproject/VSpice/server/pumpkinSpice.jpeg"
-const base64Image = fs.readFileSync(imagePath, "base64");
+
+// const imagePath = "/Users/leahputlek/Techtonica/01finalproject/VSpice/server/pumpkinSpice.jpeg"
+//need to update this to read path from image upload
+// const base64Image = fs.readFileSync(imagePath, "base64");
 
 
 const openai = new OpenAI({
@@ -15,7 +17,8 @@ const openai = new OpenAI({
 });
 
 export const analyzeImage = async (req, res) => {
-  // const { image } = req.body;
+  const { image } = req.body;
+  const base64Image = fs.readFileSync(imagePath, "base64");
 
   // if(!image){
   //   return res.status(400).json({error: "image is required"});
