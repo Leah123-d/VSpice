@@ -13,21 +13,21 @@ function CreateSpice({createNewSpice}){
     e.target.value = null;
   }
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  //   if(!spiceImage){
-  //     alert("please upload an image first");
-  //     return;
-  //   }
+    if(!spiceImage){
+      alert("please upload an image first");
+      return;
+    }
 
-  //   console.log("data from handleSubmit", formData)
+    console.log("data from handleSubmit", spiceImage)
 
-  //   createNewSpice(formData);
-  // }
+    createNewSpice(spiceImage);
+  }
   return(
     <div className="flex align-middle justify-center">
-      <form /*onSubmit={handleSubmit}*/ encType="multipart/form-data">
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         {spiceImage && <img src={URL.createObjectURL(spiceImage)}/>}
         <label htmlFor="spiceImage">Spice Image Upload</label>
         <div>

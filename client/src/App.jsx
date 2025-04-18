@@ -15,18 +15,23 @@ function App() {
     console.log("image submitted:", formData);
 
     try {
-      await fetch("/vision", {
+      const res = await fetch("/vision", {
         method: "POST",
         body: formData,
       });
-      const response = await fetch('/vision');
-      const data = await response.json();
-      setSpiceAnalyze(data);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-    } catch (error) {
+
+    const text = await res.text();
+    try{
+      const json = JSON.parse(text);
+      console.log("success:", json);
+    }
+      // setSpiceAnalyze(data);
+    catch(error){
+      console.error("count not parse response", error, text);
+    }
+    }
+    
+    catch (error) {
       console.error("error fetching data: ", error);
       setErrorHandle(true);
     }

@@ -1,5 +1,4 @@
 import dbConnection from '../db-connection.js';
-
 import fs from "fs";
 import multer from "multer";
 import OpenAI from 'openai';
@@ -16,9 +15,9 @@ const storage = multer.diskStorage({
   }
 })
 
-const upload = ({storage: storage}).single('file');
+const upload = multer({storage: storage}).single('file');
 
-let filePath = "";
+let filePath
 
 
 // const imagePath = "/Users/leahputlek/Techtonica/01finalproject/VSpice/server/pumpkinSpice.jpeg"
@@ -31,19 +30,21 @@ const openai = new OpenAI({
 });
 
 export const analyzeImage = async (req, res) => {
-  upload(req, res, (err) => {
+  upload(req, res, async (err) => {
     if(err){
       return res.status(500).json(err)
     }
-    filePath = req.file.path;
-  })
-  const { image } = req.body;
-  const base64Image = fs.readFileSync(imagePath, "base64");
-
   // if(!image){
-  //   return res.status(400).json({error: "image is required"});
+  //   return res.status(400).json({error: "no file uploaded"});
   // }
+    
+  })
+
+  const filePath = req.file.path;
+  
+  // const { image } = req.body;
   try {
+    const base64Image = fs.readFileSync(imagePath, "base64");
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
