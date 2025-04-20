@@ -42,7 +42,7 @@ export const createSpice = async (req, res) => {
   } = req.body;
   try {
     const result = await dbConnection.query(
-      `INSERT INTO spices 
+      `INSERT INTO public.spices 
                                               (name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id) 
                                               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
       [

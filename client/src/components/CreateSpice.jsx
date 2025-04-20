@@ -1,46 +1,53 @@
 //adjust to use, use reducer
 //Other componenets are going to use the stored data, not the initial fetch data.
-//I think I will be fetching the image analyzer from here 
-import { useState } from 'react'
+//I think I will be fetching the image analyzer from here
+import { useState } from "react";
 
-function CreateSpice({createNewSpice}){
+function CreateSpice({createNewSpice}) {
   const [spiceImage, setSpiceImage] = useState(null);
 
-  const handleImageUpload = (e) =>{
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
-    setSpiceImage(e.target.files[0]);
+  const handleUpload =  (e) => {
+    const file = e.target.files[0]
+    setSpiceImage(file); 
+    createNewSpice(file);
     e.target.value = null;
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
 
-    if(!spiceImage){
-      alert("please upload an image first");
-      return;
-    }
+  //   if(!spiceImage){
+  //     alert("please upload an image first");
+  //     return;
+  //   }
 
-    console.log("data from handleSubmit", spiceImage)
+  //   console.log("data from handleSubmit", spiceImage)
 
-    createNewSpice(spiceImage);
-  }
-  return(
+  //   createNewSpice(spiceImage);
+  // }
+
+  return (
     <div className="flex align-middle justify-center">
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        {spiceImage && <img src={URL.createObjectURL(spiceImage)}/>}
-        <label htmlFor="spiceImage">Spice Image Upload</label>
-        <div>
+      <section className="analyze-section">
+        <div className="image-container">
+          {spiceImage && <img src={URL.createObjectURL(spiceImage)} />}
+        </div>
+        <p className="extra-info">
+          <span>
+          <label htmlFor="files">Spice Image Upload</label>
           {/* can hide input and use label to make the upload window to appear */}
-        <input type="file" id="spiceImage" accept="image/*" onChange={handleImageUpload}></input>
-        </div>
-        <div>
-          <button type="submit" className="outline-2 rounded-md p-2">upload</button>
-        </div>
-      </form>
-      </div>
-
-  )
+          <input
+            onChange={handleUpload}
+            type="file"
+            id="files"
+            name="file"
+            accept="image/*"
+          ></input>
+          </span>
+        </p>
+      </section>
+    </div>
+  );
 }
 
-export default CreateSpice
+export default CreateSpice;

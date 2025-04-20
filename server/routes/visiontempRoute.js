@@ -1,8 +1,27 @@
 import express from 'express';
-import { analyzeImage } from '../controllers/visionTempController.js';
+import multer from "multer";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import { uploadImage, analyzeImage } from '../controllers/visionTempController.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const router = express.Router();
 
-router.post('/', analyzeImage)
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.resolve("..", "client", "public"));
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+router.post('/image', upload.single("file"), uploadImage)
+router.post('/analyze', analyzeImage)
 
 export default router;

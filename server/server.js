@@ -2,14 +2,19 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import bodyParser from 'body-parser';
-
-
 import spicesRoute from './routes/spicesRoute.js'
 // import shoppingListRoute from './routes'
 // import usersRoute from './routes'
 import visionRoute from './routes/visiontempRoute.js'
 const app = express();
+
+const corsOptions = {
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,OPTIONS, DELETE'
+}
+app.use(cors(corsOptions));
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,8 +24,6 @@ app.use(express.static(REACT_BUILD_DIR));
 
 dotenv.config();
 app.use(bodyParser.json()) 
-
-
 
 //to read the tables
 app.use('/spices', spicesRoute); 
