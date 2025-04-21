@@ -39,7 +39,8 @@ export const createSpice = async (req, res) => {
   } = req.body;
   try {
     const result = await dbConnection.query(
-      `INSERT INTO public.spices 
+      `INSERT INTO spices 
+
                                               (name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id) 
                                               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
       [
@@ -106,7 +107,9 @@ export const deleteSpice = async (req, res) => {
 };
 
 export const searchSpices = async (req, res) => {
+
   const { name } = req.params.name.toLowerCase();
+
   try {
     const result = await dbConnection.query(
       `SELECT * FROM spices WHERE name =  $1`,
@@ -121,4 +124,3 @@ export const searchSpices = async (req, res) => {
     res.status(500).send({ error: "internal server error during search" });
   }
 };
-
