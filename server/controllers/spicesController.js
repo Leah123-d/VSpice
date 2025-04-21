@@ -98,7 +98,8 @@ export const deleteSpice = async(req,res) => {
     }
     res.send(`spice: ${name} has been deleted`);
     } catch (error){
-        console.error(`could not locate spice ${name}`, error);
+        console.error(`error deleting spice ${name}`, error);
+        res.status(500).send({error: "internal server error while deleting spice."})
     }
 }
 
