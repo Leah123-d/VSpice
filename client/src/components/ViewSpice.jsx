@@ -2,12 +2,10 @@ import { useState } from "react";
 
 function ViewSpice({ spiceAnalyze, isLoading }) {
   const [showSpice, setShowSpice] = useState(false);
-
   const handleClick = (e) => {
     e.preventDefault();
     setShowSpice(true);
   };
-
   return (
     <div>
       {isLoading && (
