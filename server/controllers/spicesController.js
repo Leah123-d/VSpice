@@ -72,7 +72,7 @@ export const updateSpice = async (req, res) => {
 
   try {
     const result = await dbConnection.query(
-                                          `UPDATE spices 
+      `UPDATE spices 
                                             SET 
                                             name = $1, 
                                             brand= $2, 
@@ -88,30 +88,39 @@ export const updateSpice = async (req, res) => {
   }
 };
 
-export const deleteSpice = async(req,res) => {
+export const deleteSpice = async (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
-  try{
-    const result = await dbConnection.query(`DELETE FROM spices WHERE id = $1 RETURNING *`, [id]);
-    if(result.rowCount === 0){
-        return res.send( { "error": "spice not found" } );
+  try {
+    const result = await dbConnection.query(
+      `DELETE FROM spices WHERE id = $1 RETURNING *`,
+      [id]
+    );
+    if (result.rowCount === 0) {
+      return res.send({ error: "spice not found" });
     }
     res.send(`spice: ${name} has been deleted`);
-    } catch (error){
-        console.error(`error deleting spice ${name}`, error);
-        res.status(500).send({error: "internal server error while deleting spice."})
-    }
-}
+  } catch (error) {
+    console.error(`error deleting spice ${name}`, error);
+    res
+      .status(500)
+      .send({ error: "internal server error while deleting spice." });
+  }
+};
 
-export const searchSpices = async(req,res) => {
+export const searchSpices = async (req, res) => {
   const { name } = req.body.name.toLowerCase(); //might need this to be URL, but not sure yet
-  try{
-  const result = await dbConnection.query(`SELECT * FROM spices WHERE name =  $1`, [`%${name}%`]);
-  if(result.rowCount === 0){
-    return res.send( { "error": "spice not found" } );
+  try {
+    const result = await dbConnection.query(
+      `SELECT * FROM spices WHERE name =  $1`,
+      [`%${name}%`]
+    );
+    if (result.rowCount === 0) {
+      return res.send({ error: "spice not found" });
+    }
+    res.json(result.rows);
+  } catch (error) {
+    console.error(`error seraching for spice ${name}`, error);
+    res.status(500).send({ error: "internal server error during search" });
   }
-  res.json(result.rows);
-  }catch (error){
-  console.error('spice not found', error);
-  }
-}
+};
