@@ -6,18 +6,19 @@
 
 ## 📑 Table of Contents
 
-# VSpice
-
-**VSpice** is a spice management app — a streamlined, digital way to keep track of your spices with AI assistance! Built with the PERN stack and enriched with Tailwind, AWS S3 for image storage, and OpenAI integration, VSpice helps users manage their spice inventory in a modern, efficient, and visually clean experience.
-
----
-
 ## 📑 Table of Contents
 - [Project Objective](#project-objective)
 - [Tech Stack](#tech-stack)
 - [Installation Instructions](#installation-instructions)
 - [Features](#features)
 - [Future Plans](#future-plans)
+
+
+# VSpice
+
+**VSpice** is a spice management app — a streamlined, digital way to keep track of your spices with AI assistance! Built with the PERN stack and enriched with Tailwind, AWS S3 for image storage, and OpenAI integration, VSpice helps users manage their spice inventory in a modern, efficient, and visually clean experience.
+
+---
 
 ## Project Objective
 
