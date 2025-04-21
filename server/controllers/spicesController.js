@@ -104,7 +104,7 @@ export const deleteSpice = async(req,res) => {
 }
 
 export const searchSpices = async(req,res) => {
-  const { name } = req.body; //might need this to be URL, but not sure yet
+  const { name } = req.body.name.toLowerCase(); //might need this to be URL, but not sure yet
   try{
   const result = await dbConnection.query(`SELECT * FROM spices WHERE name =  $1`, [`%${name}%`]);
   if(result.rowCount === 0){
