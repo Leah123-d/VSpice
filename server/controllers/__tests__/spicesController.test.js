@@ -19,7 +19,7 @@ beforeAll(async () => {
 describe("GET /spices", () => {
   test("should successfully reach GET request and check first spice", async () => {
     const res = await request
-      .get("/spices")
+      .get("/spices") // the URL the test will go to to run the getSpices function
       .expect("Content-Type", /json/)
       .expect(200);
 
