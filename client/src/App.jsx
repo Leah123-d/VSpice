@@ -1,10 +1,12 @@
-//To-Do:
-//Set-up React Routing
-
+import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import "./styles.css";
 import CreateSpice from "./components/CreateSpice";
 import ViewSpice from "./components/ViewSpice";
+import NavBar from "./components/NavBar";
+import SpiceCabinet from "./components/SpiceCabinet";
+import ShoppingList from "./components/ShoppingList";
+import ErrorHandle from "./components/ErrorHandle";
 
 function App() {
   const [spiceAnalyze, setSpiceAnalyze] = useState(null);
@@ -40,16 +42,18 @@ function App() {
       console.log("analyze response:", analyzeData);
       setIsLoading(false);
 
-      const createSpiceInDB = 
-      console.log('inside create spice function', analyzeData);
-      await fetch("/spices",{
+      const createSpiceInDB = console.log(
+        "inside create spice function",
+        analyzeData
+      );
+      await fetch("/spices", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify( analyzeData ),
+        body: JSON.stringify(analyzeData),
       });
-      const response = await fetch('/spices');
+      const response = await fetch("/spices");
       const data = await response.json();
       console.log("create spice response", data);
 
@@ -60,10 +64,25 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="appContainer">
       <h1>Welcome to VSpice!</h1>
-      <CreateSpice createNewSpice={createNewSpice} />
-      <ViewSpice spiceAnalyze={spiceAnalyze} isLoading={isLoading} />
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<SpiceCabinet />} />
+        <Route
+          path="view"
+          elements={<ViewSpice />}
+          spiceAnalyze={spiceAnalyze}
+          isLoading={isLoading}
+        />
+        <Route
+          path="create"
+          elements={<CreateSpice />}
+          createNewSpice={createNewSpice}
+        />
+        <Route path="shopping" elements={<ShoppingList />} />
+        <Route path="*" element={<ErrorHandle />} />
+      </Routes>
     </div>
   );
 }
