@@ -40,18 +40,18 @@ function App() {
       console.log("analyze response:", analyzeData);
       setIsLoading(false);
 
-      const createSpiceInDB = await fetch("/spices",{
+      const createSpiceInDB = 
+      console.log('inside create spice function', analyzeData);
+      await fetch("/spices",{
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ analyzeRes }),
+        body: JSON.stringify( analyzeData ),
       });
-      //need to make sure the correct fields are sent to the database
-      const savedSpice = await createSpiceInDB.json();
-      console.log("create spice response", savedSpice);
-      setSpiceAnalyze(savedSpice);
-
+      const response = await fetch('/spices');
+      const data = await response.json();
+      console.log("create spice response", data);
 
     } catch (error) {
       console.error("error handling spice creation: ", error);
