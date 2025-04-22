@@ -45,7 +45,7 @@ export const analyzeImage = async (req, res) => {
           content: [
             {
               type: "text",
-              text: "Please analyze this spice photo and extract the following fields in strict JSON format: name (string), brand (string), full_weight (number), current_weight (number), expiration_date (string in YYYY-MM-DD or null), last_purchased (string in YYYY-MM-DD or null). If any info is missing or unreadable, use null. No extra text, no explanation—just the JSON object.",
+              text: "Please analyze this spice photo and extract the following fields in strict JSON format: name (string), brand (string), full_weight in grams (number), current_weight (number), expiration_date (string in YYYY-MM-DD or null), last_purchased (string in YYYY-MM-DD or null). If any info is missing or unreadable, use null. No extra text, no explanation—just the JSON object.",
             },
             {
               type: "image_url",
