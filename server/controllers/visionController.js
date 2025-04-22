@@ -1,6 +1,3 @@
-// const imagePath = "/Users/leahputlek/Techtonica/01finalproject/VSpice/server/pumpkinSpice.jpeg"
-//need to update this to read path from image upload
-// const base64Image = fs.readFileSync(imagePath, "base64");
 import fs from "fs";
 import OpenAI from "openai";
 import dotenv from "dotenv";
@@ -11,12 +8,11 @@ const openai = new OpenAI({
   apiKey: process.env.APIKEY,
 });
 
-
 export const uploadImage = async (req, res) => {
   console.log("Upload route hit 🚀");
   try {
-    if (!req.file){
-      return res.status(400).json({error: "no file uploaded"});
+    if (!req.file) {
+      return res.status(400).json({ error: "no file uploaded" });
     }
     console.log("uploaded file info:", req.file);
 
@@ -24,10 +20,10 @@ export const uploadImage = async (req, res) => {
       message: "file uploaded successfully",
       path: req.file.path,
       filename: req.file.filename,
-    })
-  }catch(err){
+    });
+  } catch (err) {
     console.error(err);
-    res.status(500).send('upload failed');
+    res.status(500).send("upload failed");
   }
 };
 
@@ -49,12 +45,11 @@ export const analyzeImage = async (req, res) => {
           content: [
             {
               type: "text",
-              text: "Please analyze this spice photo and extract the following fields in strict JSON format: brand (string), total_grams_full (number), expiration_date (string in YYYY-MM-DD or null), estimated_grams_remaining (number). If any info is missing or unreadable, use null. No extra text, no explanation—just the JSON object.",
+              text: "Please analyze this spice photo and extract the following fields in strict JSON format: name (string), brand (string), full_weight (number), current_weight (number), expiration_date (string in YYYY-MM-DD or null), last_purchased (string in YYYY-MM-DD or null). If any info is missing or unreadable, use null. No extra text, no explanation—just the JSON object.",
             },
             {
               type: "image_url",
               image_url: {
-                // "mime": "image/jpeg",
                 url: `data:image/jpeg;base64,${base64Image}`,
                 detail: "low",
               },
@@ -71,7 +66,6 @@ export const analyzeImage = async (req, res) => {
 
     const jsonResponse = JSON.parse(cleanedJson);
     res.json(jsonResponse);
-    //this response needs to write into the spice database 
   } catch (err) {
     console.error(err);
     res.status(500).send("Error processing vision request");
