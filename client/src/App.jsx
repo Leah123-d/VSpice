@@ -38,7 +38,6 @@ function App() {
       });
       const analyzeData = await analyzeRes.json();
       console.log("analyze response:", analyzeData);
-      setSpiceAnalyze(analyzeData);
       setIsLoading(false);
 
       const createSpiceInDB = await fetch("/spices",{
@@ -51,6 +50,7 @@ function App() {
       //need to make sure the correct fields are sent to the database
       const savedSpice = await createSpiceInDB.json();
       console.log("create spice response", savedSpice);
+      setSpiceAnalyze(savedSpice);
 
 
     } catch (error) {
