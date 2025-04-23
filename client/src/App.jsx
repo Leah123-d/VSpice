@@ -41,7 +41,6 @@ function App() {
       const analyzeData = await analyzeRes.json();
       console.log("analyze response:", analyzeData);
       setIsLoading(false);
-
       const createSpiceInDB = console.log(
         "inside create spice function",
         analyzeData
@@ -56,7 +55,6 @@ function App() {
       const response = await fetch("/spices");
       const data = await response.json();
       console.log("create spice response", data);
-
     } catch (error) {
       console.error("error handling spice creation: ", error);
       setErrorHandle(true);
@@ -64,8 +62,7 @@ function App() {
   };
 
   return (
-    <div className="appContainer">
-      <h1>Welcome to VSpice!</h1>
+    <div >
       <NavBar />
       <Routes>
         <Route path="/" element={<SpiceCabinet />} />
