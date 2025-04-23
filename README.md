@@ -231,7 +231,7 @@ npm install
 
 ```bash
 
-psql
+psql postgres
 
 ```
 
