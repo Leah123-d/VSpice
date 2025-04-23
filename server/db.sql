@@ -44,7 +44,7 @@ CREATE TABLE public.spices (
     last_purchased DATE,
     notes VARCHAR(255),
     inactive BOOLEAN DEFAULT FALSE, 
-    user_id INTEGER REFERENCES users(id),
+    user_id INTEGER REFERENCES public.users(id),
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -54,8 +54,8 @@ CREATE TABLE public.spices (
 --
 CREATE TABLE public.shopping_list(
     id SERIAL PRIMARY KEY,
-    spice_id INTEGER REFERENCES spices(id),
-    user_id INTEGER REFERENCES users(id) NOT NULL,
+    spice_id INTEGER REFERENCES public.spices(id),
+    user_id INTEGER REFERENCES public.users(id) NOT NULL,
     shopping_date DATE,
     comments TEXT,
     created_at timestamp NOT NULL DEFAULT NOW(),
