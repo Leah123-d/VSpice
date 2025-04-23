@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import spicesRoute from './routes/spicesRoute.js'
 // import shoppingListRoute from './routes'
 // import usersRoute from './routes'
-import visionRoute from './routes/visiontempRoute.js'
+import visionRoute from './routes/visionRoute.js'
 const app = express();
 
 const corsOptions = {
