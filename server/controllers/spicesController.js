@@ -19,9 +19,6 @@ export const getSpice = async (req, res) => {
 export const getSpices = async (req, res) => {
   try {
     const result = await dbConnection.query(`SELECT * FROM spices`);
-    if (result.rows.length === 0) {
-      return res.send({ error: "spices not found" });
-    }
     res.json(result.rows);
   } catch (error) {
     console.error("spices not found", error);
