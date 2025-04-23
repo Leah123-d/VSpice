@@ -64,8 +64,7 @@ npm install
 ### Client
 
 ```bash
-bash
-CopyEdit
+
 cd client
 npm install
 ```
@@ -217,8 +216,7 @@ npm install
 ### Client
 
 ```bash
-bash
-CopyEdit
+
 cd client
 npm install
 ```
