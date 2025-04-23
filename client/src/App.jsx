@@ -49,8 +49,8 @@ function App() {
         body: JSON.stringify({ analyzeRes }),
       });
       //need to make sure the correct fields are sent to the database
-      const SpiceDB = await createSpiceInDB.json();
-      console.log("create spice response", SpiceDB);
+      const savedSpice = await createSpiceInDB.json();
+      console.log("create spice response", savedSpice);
 
 
     } catch (error) {
