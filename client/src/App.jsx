@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./styles.css";
 import CreateSpice from "./components/CreateSpice";
 import ViewSpice from "./components/ViewSpice";
@@ -12,6 +12,8 @@ function App() {
   const [spiceAnalyze, setSpiceAnalyze] = useState(null);
   const [errorHandle, setErrorHandle] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [storedSpices, setStoredSpices] = useState(null);
+  const [viewSpice, setViewSpice] =  useState(null);
 
   const createNewSpice = async (file) => {
     const formData = new FormData();
@@ -40,7 +42,6 @@ function App() {
       });
       const analyzeData = await analyzeRes.json();
       console.log("analyze response:", analyzeData);
-      setIsLoading(false);
       const createSpiceInDB = console.log(
         "inside create spice function",
         analyzeData
@@ -56,29 +57,52 @@ function App() {
       const newSpice = await response.json();
       console.log("create spice response", newSpice);
       setSpiceAnalyze(newSpice);
+      setIsLoading(false);
     } catch (error) {
       console.error("error handling spice creation: ", error);
       setErrorHandle(true);
     }
   };
+  const getSpices = async (id) => {
+    try {
+      const url = id ? `/spices/${id}` : "/spices";
+      const res = await fetch(url);
+
+      if (!res.ok) throw new Error("Failed to fetch spices");
+
+      const data = await res.json();
+      console.log("fetched spices: ", data);
+      if(id){
+        setViewSpice(data);
+        return data;
+      }else{
+        setStoredSpices(data);
+      }
+    } catch (error) {
+      console.error("Error fetchig posts: ", error);
+      setErrorHandle(true);
+      return [];
+    }
+  };
+  useEffect(() => {
+    getSpices();
+  }, []);
 
   return (
-    <div >
+    <div>
       <NavBar />
       <Routes>
-        <Route path="/" element={<SpiceCabinet />} />
+        <Route path="/" element={<SpiceCabinet storedSpices={storedSpices} getSpices={getSpices}/>} />
         <Route
           path="view"
-          elements={<ViewSpice />}
-          spiceAnalyze={spiceAnalyze}
-          isLoading={isLoading}
+          element={<ViewSpice viewSpice={viewSpice}/>}
+
         />
         <Route
           path="create"
-          elements={<CreateSpice />}
-          createNewSpice={createNewSpice}
+          element={<CreateSpice createNewSpice={createNewSpice} />}
         />
-        <Route path="shopping" elements={<ShoppingList />} />
+        <Route path="shopping" element={<ShoppingList />} />
         <Route path="*" element={<ErrorHandle />} />
       </Routes>
     </div>
