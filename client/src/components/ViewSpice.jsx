@@ -1,8 +1,9 @@
 import { X } from "lucide-react";
 import { useState } from "react";
-function ViewSpice({ viewSpice }) {
+import { useNavigate } from "react-router";
+function ViewSpice({ viewSpice, handleEditSpice }) {
   //can add the math for current weight here and display that as a status
-  const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
 
   console.log("in view spice component", viewSpice);
 
@@ -11,15 +12,18 @@ function ViewSpice({ viewSpice }) {
       <div className="shrink-0 relative w-full rounded-t-xl overflow-hidden pt-[40%] sm:rounded-s-xl sm:max-w-60 md:rounded-se-none md:max-w-xs">
         <img
           className="size-full absolute top-0 start-0 object-cover"
-          src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80"
+          src="https://www.savoryspiceshop.com/cdn/shop/products/citrus-pepper-seasoning_jar-crop_695x579.jpg?v=1739378887"
           alt="Card Image"
         />
       </div>
       <div className="flex flex-wrap">
         {viewSpice &&
           viewSpice.map((spice) => (
-            <div className="p-4 flex flex-col h-full sm:p-7">
-              <h3 key={spice.id} className="text-lg font-bold text-gray-800 dark:text-white">
+            <div key={spice.id} className="p-4 flex flex-col h-full sm:p-7">
+              <h3
+                
+                className="text-lg font-bold text-gray-800 dark:text-white"
+              >
                 {spice.name}
               </h3>
               <ul className="mt-1 text-gray-500 dark:text-neutral-400">
@@ -31,7 +35,10 @@ function ViewSpice({ viewSpice }) {
                 </ul>
               </ul>
               <div className="mt-5 sm:mt-auto">
-                <button className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-yellow-500 text-yellow-500 hover:border-yellow-400 focus:outline-hidden focus:border-yellow-400 focus:text-yellow-400 disabled:opacity-50 disabled:pointer-events-none">
+                <button
+                  onClick={async () => {await handleEditSpice(spice.id); navigate('/edit')}}
+                  className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-yellow-500 text-yellow-500 hover:border-yellow-400 focus:outline-hidden focus:border-yellow-400 focus:text-yellow-400 disabled:opacity-50 disabled:pointer-events-none"
+                >
                   Edit
                 </button>
               </div>

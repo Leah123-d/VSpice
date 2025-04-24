@@ -6,6 +6,7 @@ import ViewSpice from "./components/ViewSpice";
 import NavBar from "./components/NavBar";
 import SpiceCabinet from "./components/SpiceCabinet";
 import ShoppingList from "./components/ShoppingList";
+import EditSpice from "./components/EditSpice";
 import ErrorHandle from "./components/ErrorHandle";
 
 function App() {
@@ -13,12 +14,15 @@ function App() {
   const [errorHandle, setErrorHandle] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [storedSpices, setStoredSpices] = useState(null);
-  const [viewSpice, setViewSpice] =  useState(null);
+  const [viewSpice, setViewSpice] = useState(null);
 
+  const handleEditSpice = (id) => {
+    console.log(id);
+    getSpices(id);
+  }
   const createNewSpice = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    //we will pass the function to the component and get the information that way
     console.log("image submitted:", formData);
 
     try {
@@ -42,10 +46,6 @@ function App() {
       });
       const analyzeData = await analyzeRes.json();
       console.log("analyze response:", analyzeData);
-      const createSpiceInDB = console.log(
-        "inside create spice function",
-        analyzeData
-      );
       await fetch("/spices", {
         method: "POST",
         headers: {
@@ -70,10 +70,10 @@ function App() {
 
       const data = await res.json();
       console.log("fetched spices: ", data);
-      if(id){
+      if (id) {
         setViewSpice(data);
         return data;
-      }else{
+      } else {
         setStoredSpices(data);
       }
     } catch (error) {
@@ -82,6 +82,28 @@ function App() {
       return [];
     }
   };
+  const editSpice = async(id, formData) => {
+    try {
+      const url = `/spices/${id}`;
+      const response = await fetch(url, {
+        method: "PUT",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        throw new Error("update failed");
+      }
+
+      console.log("update successful!");
+      getSpices(id);
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
   useEffect(() => {
     getSpices();
   }, []);
@@ -90,16 +112,21 @@ function App() {
     <div>
       <NavBar />
       <Routes>
-        <Route path="/" element={<SpiceCabinet storedSpices={storedSpices} getSpices={getSpices}/>} />
+        <Route
+          path="/"
+          element={
+            <SpiceCabinet storedSpices={storedSpices} getSpices={getSpices} />
+          }
+        />
         <Route
           path="view"
-          element={<ViewSpice viewSpice={viewSpice}/>}
-
+          element={<ViewSpice viewSpice={viewSpice} editSpice={editSpice} handleEditSpice={handleEditSpice} />}
         />
         <Route
           path="create"
           element={<CreateSpice createNewSpice={createNewSpice} />}
         />
+        <Route path="edit" element={<EditSpice editSpice={editSpice} viewSpice={viewSpice}/>} />
         <Route path="shopping" element={<ShoppingList />} />
         <Route path="*" element={<ErrorHandle />} />
       </Routes>

@@ -4,6 +4,9 @@ import { View, Trash2 } from "lucide-react";
 
 function SpiceCabinet({ storedSpices, getSpices }) {
   const navigate = useNavigate();
+  function formatDate(date){
+    return date ? new Date(date).toISOString().split("T")[0] : "-";
+  }
 
   return (
     <div className="flex flex-col">
@@ -82,10 +85,10 @@ function SpiceCabinet({ storedSpices, getSpices }) {
                         {spice.current_weight}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                        {spice.expiration_date}
+                        {formatDate(spice.expiration_date)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                        {spice.last_purchased}
+                        {formatDate(spice.last_purchased)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                         <button
