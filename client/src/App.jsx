@@ -13,13 +13,16 @@ function App() {
   const [spiceAnalyze, setSpiceAnalyze] = useState(null);
   const [errorHandle, setErrorHandle] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [storedSpices, setStoredSpices] = useState(null);
   const [viewSpice, setViewSpice] =  useState(null);
   const [viewSpice, setViewSpice] = useState(null);
+  const [uploadedSpice, setUploadedSpice] = useState(null);
+
   const handleEditSpice = (id) => {
     console.log(id);
     getSpices(id);
-  }
+  };
   const createNewSpice = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -31,12 +34,9 @@ function App() {
         body: formData,
       });
       const uploadData = await res.json();
-      setIsLoading(true);
-
       if (!uploadData.path) {
         console.error("upload did not return valid path");
       }
-
       const analyzeRes = await fetch("/vision/analyze", {
         method: "POST",
         headers: {
@@ -46,11 +46,9 @@ function App() {
       });
       const analyzeData = await analyzeRes.json();
       console.log("analyze response:", analyzeData);
+      setIsLoading(true);
+      setIsAnalyzing(true);
 
-      const createSpiceInDB = console.log(
-        "inside create spice function",
-        analyzeData
-      );
       await fetch("/spices", {
         method: "POST",
         headers: {
@@ -65,6 +63,10 @@ function App() {
       setIsLoading(false);
       const data = await response.json();
       console.log("create spice response", data);
+      setIsAnalyzing(false);
+
+      const newestSpice = data[data.length-1];
+      setUploadedSpice(newestSpice);
     } catch (error) {
       console.error("error handling spice creation: ", error);
       setErrorHandle(true);
@@ -95,7 +97,7 @@ function App() {
       return [];
     }
   };
-  const editSpice = async(id, formData) => {
+  const editSpice = async (id, formData) => {
     try {
       const url = `/spices/${id}`;
       const response = await fetch(url, {
@@ -114,8 +116,8 @@ function App() {
     } catch (error) {
       console.log(error);
     }
+  };
 
-  }
   useEffect(() => {
     getSpices();
   }, []);
@@ -136,13 +138,30 @@ function App() {
         />
         <Route
           path="view"
-          element={<ViewSpice viewSpice={viewSpice} editSpice={editSpice} handleEditSpice={handleEditSpice} />}
+          element={
+            <ViewSpice
+              viewSpice={viewSpice}
+              editSpice={editSpice}
+              handleEditSpice={handleEditSpice}
+            />
+          }
         />
         <Route
           path="create"
-          element={<CreateSpice createNewSpice={createNewSpice} />}
+          element={
+            <CreateSpice
+              createNewSpice={createNewSpice}
+              isLoading={isLoading}
+              isAnalyzing={isAnalyzing}
+              uploadedSpice={uploadedSpice}
+              getSpices={getSpices}
+            />
+          }
         />
-        <Route path="edit" element={<EditSpice editSpice={editSpice} viewSpice={viewSpice}/>} />
+        <Route
+          path="edit"
+          element={<EditSpice editSpice={editSpice} viewSpice={viewSpice} />}
+        />
         <Route path="shopping" element={<ShoppingList />} />
         <Route path="*" element={<ErrorHandle />} />
       </Routes>
