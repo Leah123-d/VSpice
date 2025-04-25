@@ -64,7 +64,10 @@ function EditSpice({ viewSpice, editSpice }) {
 
   return (
     <div className="formContainer">
-      <div className="max-w-s h-auto flex flex-col bg-white border border-gray-200 border-t-4 border-t-blue-600 shadow-2xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:border-t-blue-500 dark:shadow-neutral-700/70">
+      <div className="max-w-s h-auto flex flex-col bg-white border border-gray-200 
+        border-t-4 border-t-blue-600 shadow-2xs rounded-xl 
+        dark:bg-neutral-900 dark:border-neutral-700 
+        dark:border-t-blue-500 dark:shadow-neutral-700/70">
         <div className="p-4 md:p-5 mb-4">
           <h3 className="text-lg font-bold text-gray-800 dark:text-white">
             {initialState.name}
