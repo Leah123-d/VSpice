@@ -30,7 +30,7 @@ function CreateSpice({ createNewSpice, isLoading, getSpices, isAnalyzing }) {
           </span>
         </p>
 
-        {isAnalyzing && !isLoading (
+        {isAnalyzing && !isLoading && (
           <div className="flex flex-col items-center gap-2 py-4">
             <div className="h-6 w-6 border-4 border-blue-300 border-t-transparent rounded-full animate-spin"></div>
             <span className="text-sm text-gray-600">Analyzing spice...</span>
