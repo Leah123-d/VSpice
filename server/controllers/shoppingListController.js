@@ -22,9 +22,6 @@ export const getPastShoppingLists = async (req, res) => {
     const result = await dbConnection.query(
       `SELECT * FROM shopping_list ORDER BY shopping_date  `
     );
-    if (result.rows.length === 0) {
-      return res.send({ error: "shopping list not found" });
-    }
     res.json(result.rows);
   } catch (error) {
     console.error(error);
@@ -42,7 +39,7 @@ export const createShoppingList = async (req, res) => {
       [spice_id, shopping_date, comments]
     );
 
-    res.json({ message: `new shopping_list ${result.rows[0]} was added` });
+    res.json(result.rows);
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: "internal server error" });
