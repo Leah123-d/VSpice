@@ -8,7 +8,7 @@ export const getShoppingList = async (req, res) => {
       [id]
     );
     if (result.rows.length === 0) {
-      return res.send({ error: "shopping list not found" });
+      return res.status(404);
     }
     res.json(result.rows);
   } catch (error) {
