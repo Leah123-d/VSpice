@@ -57,7 +57,7 @@ export const deleteShoppingList = async (req, res) => {
       [id]
     );
     if (result.rowCount === 0) {
-      return res.send({ error: "shopping list not found" });
+      return res.status(404);
     }
     res.send(`shopping list: ${id} has been deleted`);
   } catch (error) {
