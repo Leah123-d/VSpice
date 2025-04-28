@@ -6,7 +6,7 @@ function NavBar() {
     <div>
       <div
         id="hs-sidebar-basic-usage"
-        className="hs-overlay [--auto-close:lg] lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 w-64
+        className="hs-overlay [--auto-close:2xl] 2xl:block 2xl:translate-x-0 2xl:end-auto 2xl:bottom-0 w-64
               hs-overlay-open:translate-x-0
               -translate-x-full transition-all duration-300 transform
               h-full
