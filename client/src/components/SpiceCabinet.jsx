@@ -12,7 +12,7 @@ function SpiceCabinet({ storedSpices, getSpices }) {
     <div className="flex flex-col">
       <h1>Spice Cabinet</h1>
       <div className="-m-1.5 overflow-x-auto">
-        <div className="p-1.5 min-w-full inline-block align-middle">
+        <div className="p-1.5 min-w-full m-25 inline-block align-middle">
           <div className="border border-gray-200 rounded-lg overflow-hidden dark:border-neutral-700">
             <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
               <thead className="bg-gray-50 dark:bg-neutral-700">
