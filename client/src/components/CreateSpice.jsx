@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
-function CreateSpice({ createNewSpice, isLoading, getSpices, isAnalyzing }) {
+function CreateSpice({ createNewSpice, isLoading, getSpices, isAnalyzing, setIsLoading, setIsAnalyzing }) {
+
   const navigate = useNavigate();
+  const location = useLocation();
   const [spiceImage, setSpiceImage] = useState(null);
 
   const handleUpload = (e) => {
@@ -11,6 +13,11 @@ function CreateSpice({ createNewSpice, isLoading, getSpices, isAnalyzing }) {
     createNewSpice(file);
     e.target.value = null;
   };
+  useEffect(() => {
+    setIsLoading(true);
+    setIsAnalyzing(false);
+  }, [location.pathname,setIsLoading,setIsAnalyzing]);
+
   return (
     <div>
       <h1>AI Spice Analyze</h1>
