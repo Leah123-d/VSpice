@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-function CreateSpice({ createNewSpice, isLoading, getSpices, isAnalyzing, setIsLoading, setIsAnalyzing }) {
+function CreateSpice({ createNewSpice, isLoading, getSpices, isAnalyzing, setIsLoading, setIsAnalyzing, newSpiceId }) {
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -48,8 +48,8 @@ function CreateSpice({ createNewSpice, isLoading, getSpices, isAnalyzing, setIsL
         {!isAnalyzing && !isLoading && (
           <button
             onClick={async () => {
-              await getSpices();
-              navigate("/");
+              await getSpices(newSpiceId);
+              navigate(`/view`);
             }}
             className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
           >
