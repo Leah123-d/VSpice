@@ -17,6 +17,7 @@ function App() {
   const [viewSpice, setViewSpice] =  useState(null);
   const [viewSpice, setViewSpice] = useState(null);
   const [uploadedSpice, setUploadedSpice] = useState(null);
+  const [newSpiceId, setNewSpiceId] = useState(null);
 
   const handleEditSpice = (id) => {
     console.log(id);
@@ -47,20 +48,16 @@ function App() {
       });
       const analyzeData = await analyzeRes.json();
       console.log("analyze response:", analyzeData);
-      await fetch("/spices", {
+      const postAnalyze = await fetch("/spices", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(analyzeData),
       });
-      const response = await fetch("/spices");
-      const newSpice = await response.json();
-      console.log("create spice response", newSpice);
-      setSpiceAnalyze(newSpice);
-      setIsLoading(false);
-      const data = await response.json();
-      console.log("create spice response", data);
+      const newSpice = await postAnalyze.json();
+      console.log("new spice response", newSpice.id);
+      setNewSpiceId(newSpice.id);
       setIsLoading(false);
       setIsAnalyzing(false);
 
@@ -166,6 +163,7 @@ function App() {
               getSpices={getSpices}
               setIsAnalyzing={setIsAnalyzing}
               setIsLoading={setIsLoading}
+              newSpiceId={newSpiceId}
             />
           }
         />
