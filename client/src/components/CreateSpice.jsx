@@ -12,14 +12,15 @@ function CreateSpice({ createNewSpice, isLoading, getSpices, isAnalyzing }) {
     e.target.value = null;
   };
   return (
-    <div className="flex align-middle justify-center">
-      <section className="analyze-section">
+    <div>
+      <h1>AI Spice Analyze</h1>
+      <section id="analyze-section" className="flex justify-center items-center h-screen bg-gray-50">
         <div className="image-container">
           {spiceImage && <img src={URL.createObjectURL(spiceImage)} />}
         </div>
         <p className="extra-info">
           <span>
-            <label htmlFor="files">Spice Image Upload</label>
+            <label htmlFor="files"></label>
             <input
               onChange={handleUpload}
               type="file"
@@ -30,14 +31,14 @@ function CreateSpice({ createNewSpice, isLoading, getSpices, isAnalyzing }) {
           </span>
         </p>
 
-        {isAnalyzing && !isLoading && (
+        {isAnalyzing && isLoading && (
           <div className="flex flex-col items-center gap-2 py-4">
             <div className="h-6 w-6 border-4 border-blue-300 border-t-transparent rounded-full animate-spin"></div>
             <span className="text-sm text-gray-600">Analyzing spice...</span>
           </div>
         )}
 
-        {isLoading && (
+        {!isAnalyzing && !isLoading && (
           <button
             onClick={async () => {
               await getSpices();
