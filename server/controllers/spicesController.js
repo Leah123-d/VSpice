@@ -56,7 +56,7 @@ export const createSpice = async (req, res) => {
       ]
     );
 
-    res.json({ message: `new spice ${result.rows[0].name} was added` });
+    res.json(result.rows[0]);
   } catch (error) {
     console.error("Error creating new spice: ", error);
   }
