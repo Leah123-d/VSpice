@@ -60,7 +60,7 @@ function App() {
       console.log("create spice response", data);
       setIsAnalyzing(false);
 
-      const newestSpice = data[data.length-1];
+      const newestSpice = data[data.length - 1];
       setUploadedSpice(newestSpice);
     } catch (error) {
       console.error("error handling spice creation: ", error);
@@ -101,11 +101,23 @@ function App() {
       if (!response.ok) {
         throw new Error("update failed");
       }
-
       console.log("update successful!");
       getSpices(id);
     } catch (error) {
       console.log(error);
+    }
+  };
+  const deleteSpice = async (id) => {
+    console.log("deleting spice with ID:", id);
+    try {
+      const url = `/spices/${id}`;
+      await fetch(url, { method: "DELETE" });     
+      getSpices();
+      console.log(`spcie with ${id} is successfully deleted!`);
+    }
+    catch (error) {
+      console.log(error);
+      setErrorHandle(true);
     }
   };
 
@@ -120,7 +132,7 @@ function App() {
         <Route
           path="/"
           element={
-            <SpiceCabinet storedSpices={storedSpices} getSpices={getSpices} />
+            <SpiceCabinet storedSpices={storedSpices} getSpices={getSpices} deleteSpice={deleteSpice} />
           }
         />
         <Route
