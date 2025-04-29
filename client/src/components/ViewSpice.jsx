@@ -1,10 +1,9 @@
-import { X } from "lucide-react";
 import { useNavigate } from "react-router";
 function ViewSpice({ viewSpice, handleEditSpice }) {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-2xs sm:flex dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70 ">
+    <div className="bg-white border border-gray-200 rounded-xl shadow-2xs sm:flex dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
       <div className="shrink-0 relative w-full rounded-t-xl overflow-hidden pt-[40%] sm:rounded-s-xl sm:max-w-60 md:rounded-se-none md:max-w-xs">
         <img
           className="size-full absolute top-0 start-0 object-cover"
@@ -12,9 +11,6 @@ function ViewSpice({ viewSpice, handleEditSpice }) {
           alt="Card Image"
         />
       </div>
-      <button onClick={async () => { await navigate("/");}}className="absolute top-12 right-130 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white border-2 rounded-md p-0.5">
-          <X />
-        </button>
       <div className="flex flex-wrap" id="view-spice">
         {viewSpice &&
           viewSpice.map((spice) => (
@@ -38,9 +34,18 @@ function ViewSpice({ viewSpice, handleEditSpice }) {
                     navigate("/edit");
                   }}
                   type="button"
-                  className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
+                  className="m-2 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
                 >
                   Edit
+                </button>
+                <button
+                  onClick={async () => {
+                    await navigate("/");
+                  }}
+                  type="button"
+                  className="m-2 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
+                >
+                  Close
                 </button>
               </div>
             </div>
