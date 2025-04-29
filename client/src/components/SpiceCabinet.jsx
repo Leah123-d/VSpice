@@ -6,9 +6,17 @@ import { View, Trash2 } from "lucide-react";
 
 function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
   const navigate = useNavigate();
+
   function formatDate(date){
     return date ? new Date(date).toISOString().split("T")[0] : "-";
   }
+
+  function sortSpices(){
+    const sortedSpiceNames = [...storedSpices].sort((a,b) => a > b ? -1 : 1); 
+    console.log('in sort function', sortedSpiceNames)
+    return sortedSpiceNames;
+  }
+  
   return (
     <div className="flex flex-col">
       <h1>Spice Cabinet</h1>
@@ -23,6 +31,9 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-400"
                   >
                     Name
+                    <button onClick={sortSpices}>
+                      sort
+                    </button>
                   </th>
                   <th
                     scope="col"
