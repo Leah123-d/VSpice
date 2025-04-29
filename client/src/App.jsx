@@ -151,6 +151,8 @@ function App() {
               isAnalyzing={isAnalyzing}
               uploadedSpice={uploadedSpice}
               getSpices={getSpices}
+              setIsAnalyzing={setIsAnalyzing}
+              setIsLoading={setIsLoading}
             />
           }
         />
