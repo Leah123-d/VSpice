@@ -87,7 +87,6 @@ export const updateSpice = async (req, res) => {
 
 export const deleteSpice = async (req, res) => {
   const { id } = req.params;
-  const { name } = req.body;
   try {
     const result = await dbConnection.query(
       `DELETE FROM spices WHERE id = $1 RETURNING *`,
@@ -96,9 +95,9 @@ export const deleteSpice = async (req, res) => {
     if (result.rowCount === 0) {
       return res.send({ error: "spice not found" });
     }
-    res.send(`spice: ${name} has been deleted`);
+    res.send(`spice: ${id} has been deleted`);
   } catch (error) {
-    console.error(`error deleting spice ${name}`, error);
+    console.error(`error deleting spice ${id}`, error);
     res
       .status(500)
       .send({ error: "internal server error while deleting spice." });
