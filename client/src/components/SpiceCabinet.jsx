@@ -1,4 +1,4 @@
-import { use } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 function SpiceCabinet({ storedSpices, getSpices }) {
   const navigate = useNavigate();
@@ -6,18 +6,30 @@ import { View, Trash2 } from "lucide-react";
 
 function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
   const navigate = useNavigate();
+  const [displaySpices, setDisplaySpices] = useState([]);
+  const [isAscending, setIsAscending] = useState(true);
+
+  useEffect(() => {
+    setDisplaySpices(storedSpices)
+  }, [storedSpices]);
 
   function formatDate(date){
     return date ? new Date(date).toISOString().split("T")[0] : "-";
   }
 
   function sortSpices(){
-    const sortedSpiceNames = [...storedSpices].sort((a,b) => a > b ? -1 : 1); 
-    console.log('in sort function', sortedSpiceNames)
-    return sortedSpiceNames;
-  }
+    const sorted = [...displaySpices].sort((a,b) => {
+      const nameA = a.name?.toLowerCase() ?? ""; 
+      const nameB = b.name?.toLowerCase() ?? ""; 
 
-  
+      if(nameA < nameB) return isAscending ? -1 : 1;
+      if(nameA > nameB) return isAscending ? 1 : -1; 
+
+    return 0;
+  });
+  setDisplaySpices(sorted);
+  setIsAscending(!isAscending);
+}
 
   return (
     <div className="flex flex-col">
@@ -34,7 +46,7 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                   >
                     Name
                     <button onClick={sortSpices}>
-                      sort
+                      Sort
                     </button>
                   </th>
                   <th
@@ -83,8 +95,8 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                {storedSpices &&
-                  storedSpices.map((spice) => (
+                {displaySpices &&
+                  displaySpices.map((spice) => (
                     <tr key={spice.id}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                         {spice.name}
