@@ -10,9 +10,8 @@ import EditSpice from "./components/EditSpice";
 import ErrorHandle from "./components/ErrorHandle";
 
 function App() {
-  const [spiceAnalyze, setSpiceAnalyze] = useState(null);
   const [errorHandle, setErrorHandle] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [storedSpices, setStoredSpices] = useState(null);
   const [viewSpice, setViewSpice] = useState(null);
@@ -36,6 +35,8 @@ function App() {
       if (!uploadData.path) {
         console.error("upload did not return valid path");
       }
+      setIsLoading(true);
+      setIsAnalyzing(true);
       const analyzeRes = await fetch("/vision/analyze", {
         method: "POST",
         headers: {
@@ -45,9 +46,6 @@ function App() {
       });
       const analyzeData = await analyzeRes.json();
       console.log("analyze response:", analyzeData);
-      setIsLoading(true);
-      setIsAnalyzing(true);
-
       await fetch("/spices", {
         method: "POST",
         headers: {
@@ -58,10 +56,9 @@ function App() {
       const response = await fetch("/spices");
       const data = await response.json();
       console.log("create spice response", data);
+      setIsLoading(false);
       setIsAnalyzing(false);
 
-      const newestSpice = data[data.length - 1];
-      setUploadedSpice(newestSpice);
     } catch (error) {
       console.error("error handling spice creation: ", error);
       setErrorHandle(true);
