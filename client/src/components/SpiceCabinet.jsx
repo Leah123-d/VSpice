@@ -4,7 +4,7 @@ function SpiceCabinet({ storedSpices, getSpices }) {
   const navigate = useNavigate();
 import { View, Trash2 } from "lucide-react";
 
-function SpiceCabinet({ storedSpices, getSpices }) {
+function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
   const navigate = useNavigate();
   function formatDate(date){
     return date ? new Date(date).toISOString().split("T")[0] : "-";
@@ -114,6 +114,7 @@ function SpiceCabinet({ storedSpices, getSpices }) {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                         <button
+                          onClick={async () => {await deleteSpice(spice.id)}}
                           type="button"
                           className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400"
                         >
