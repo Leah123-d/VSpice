@@ -24,8 +24,6 @@ function App() {
   const createNewSpice = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    console.log("image submitted:", formData);
-
     try {
       const res = await fetch("vision/image", {
         method: "POST",
