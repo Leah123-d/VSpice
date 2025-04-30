@@ -15,7 +15,6 @@ function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [storedSpices, setStoredSpices] = useState(null);
   const [viewSpice, setViewSpice] = useState(null);
-  const [uploadedSpice, setUploadedSpice] = useState(null);
   const [newSpiceId, setNewSpiceId] = useState(null);
 
   const handleEditSpice = (id) => {
@@ -150,7 +149,6 @@ function App() {
               createNewSpice={createNewSpice}
               isLoading={isLoading}
               isAnalyzing={isAnalyzing}
-              uploadedSpice={uploadedSpice}
               getSpices={getSpices}
               setIsAnalyzing={setIsAnalyzing}
               setIsLoading={setIsLoading}

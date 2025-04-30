@@ -1,33 +1,45 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { View, Trash2 } from "lucide-react";
+import {
+  View,
+  Trash2,
+  ChevronDown,
+  ChevronUp,
+  ChevronsDownUp,
+} from "lucide-react";
 
 function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
   const navigate = useNavigate();
   const [displaySpices, setDisplaySpices] = useState([]);
   const [isAscending, setIsAscending] = useState(true);
+  const [sortKey, setSortKey] = useState("name");
 
   useEffect(() => {
-    setDisplaySpices(storedSpices)
+    setDisplaySpices(storedSpices);
   }, [storedSpices]);
 
-  function formatDate(date){
+  function formatDate(date) {
     return date ? new Date(date).toISOString().split("T")[0] : "-";
   }
 
-  function sortSpices(){
-    const sorted = [...displaySpices].sort((a,b) => {
-      const nameA = a.name?.toLowerCase() ?? ""; 
-      const nameB = b.name?.toLowerCase() ?? ""; 
+  function sortSpices(key) {
+    if (sortKey === key) {
+      setIsAscending(!isAscending);
+    } else {
+      setSortKey(key);
+      setIsAscending(true);
+    }
+    const sorted = [...displaySpices].sort((a, b) => {
+      const aVal = a[key]?.toString().toLowerCase() ?? "";
+      const bVal = b[key]?.toString().toLowerCase() ?? "";
 
-      if(nameA < nameB) return isAscending ? -1 : 1;
-      if(nameA > nameB) return isAscending ? 1 : -1; 
+      if (aVal < bVal) return isAscending ? -1 : 1;
+      if (aVal > bVal) return isAscending ? 1 : -1;
 
-    return 0;
-  });
-  setDisplaySpices(sorted);
-  setIsAscending(!isAscending);
-}
+      return 0;
+    });
+    setDisplaySpices(sorted);
+  }
 
   return (
     <div className="flex flex-col">
@@ -42,16 +54,39 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                     scope="col"
                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-400"
                   >
+                    <div className="flex items-center gap-x-1">
                     Name
-                    <button onClick={sortSpices}>
-                      Sort
+                    <button onClick={() => sortSpices("name")}>
+                      {sortKey === "name" ? (
+                        isAscending ? (
+                          <ChevronUp size={16}/>
+                        ) : (
+                          <ChevronDown size={16}/>
+                        )
+                      ) : (
+                        <ChevronsDownUp size={16}/>
+                      )}
                     </button>
+                    </div>
                   </th>
                   <th
                     scope="col"
                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-400"
                   >
+                    <div className="flex items-center gap-x-1">
                     Brand
+                    <button onClick={() => sortSpices("brand")}>
+                      {sortKey === "brand" ? (
+                        isAscending ? (
+                          <ChevronUp size={16}/>
+                        ) : (
+                          <ChevronDown size={16}/>
+                        )
+                      ) : (
+                        <ChevronsDownUp size={16}/>
+                      )}
+                    </button>
+                    </div>
                   </th>
                   <th
                     scope="col"
@@ -63,7 +98,20 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                     scope="col"
                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-400"
                   >
+                    <div className="flex items-center gap-x-1">
                     Current weight
+                    <button onClick={() => sortSpices("current_weight")}>
+                      {sortKey === "current_weight" ? (
+                        isAscending ? (
+                          <ChevronUp size={16}/>
+                        ) : (
+                          <ChevronDown size={16}/>
+                        )
+                      ) : (
+                        <ChevronsDownUp size={16}/>
+                      )}
+                      </button>
+                      </div>
                   </th>
                   <th
                     scope="col"
@@ -75,7 +123,20 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                     scope="col"
                     className="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-400"
                   >
+                    <div className="flex items-center gap-x-1">
                     Last Purchased
+                    <button onClick={() => sortSpices("last_purchased")}>
+                      {sortKey === "last_purchased" ? (
+                        isAscending ? (
+                          <ChevronUp size={16}/>
+                        ) : (
+                          <ChevronDown size={16}/>
+                        )
+                      ) : (
+                        <ChevronsDownUp size={16}/>
+                      )}
+                      </button>
+                      </div>
                   </th>
 
                   <th
@@ -128,7 +189,9 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                         <button
-                          onClick={async () => {await deleteSpice(spice.id)}}
+                          onClick={async () => {
+                            await deleteSpice(spice.id);
+                          }}
                           type="button"
                           className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400"
                         >
