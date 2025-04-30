@@ -45,7 +45,7 @@ The goal of this project is to demonstrate full-stack development by creating a 
 ```bash
 
 git clone https://github.com/your-username/vspice.git
-cd vspice
+cd Vspice
 ```
 
 ### 2. Environment Setup
