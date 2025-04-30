@@ -59,7 +59,7 @@ function CreateSpice({
           >
             <span id="hs-soft-color-danger-label" class="font-bold">
             Unsupported image. Please make sure your image has of one the following formats: ['png', 'jpeg', 'gif', 'webp'].
-            </span>{" "}
+            </span>
           </div>
         )}
         <div className="image-container">
