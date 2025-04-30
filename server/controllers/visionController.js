@@ -14,7 +14,7 @@ export const uploadImage = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "no file uploaded" });
     }
-    console.log("uploaded file info:", req.file);
+    console.log("uploaded file info:", req.file.buffer);
 
     res.json({
       message: "file uploaded successfully",
