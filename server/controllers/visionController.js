@@ -2,7 +2,7 @@ import fs from "fs";
 import OpenAI from "openai";
 import dotenv from "dotenv";
 
-import { S3Client } from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 
 dotenv.config();
 
@@ -11,27 +11,49 @@ const bucketRegion= process.env.BUCKET_REGION;
 const accessKey= process.env.ACCESS_KEY;
 const secretAcessKey= process.env.SECRET_ACCESS_KEY;
 
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: accessKey,
+    secretAccessKey: secretAcessKey,
+  },
+  region: bucketRegion
+})
+
 const openai = new OpenAI({
   apiKey: process.env.APIKEY,
 });
 
 export const uploadImage = async (req, res) => {
   console.log("Upload route hit 🚀");
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: "no file uploaded" });
-    }
-    console.log("uploaded file info:", req.file.buffer);
 
-    res.json({
-      message: "file uploaded successfully",
-      path: req.file.path,
-      filename: req.file.filename,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("upload failed");
+  req.file.buffer
+
+  const params = {
+    Bucket: bucketName,
+    Key: req.file.originalname, 
+    Body: req.file.buffer,
+    ContentType: req.file.mimetype,
   }
+
+  const command = new PutObjectCommand({})
+  await s3.send(command)
+
+  res.send({})
+  // try {
+  //   if (!req.file) {
+  //     return res.status(400).json({ error: "no file uploaded" });
+  //   }
+
+
+  //   res.json({
+  //     message: "file uploaded successfully",
+  //     path: req.file.path,
+  //     filename: req.file.filename,
+  //   });
+  // } catch (err) {
+  //   console.error(err);
+  //   res.status(500).send("upload failed");
+  // }
 };
 
 export const analyzeImage = async (req, res) => {
