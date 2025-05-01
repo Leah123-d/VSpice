@@ -23,15 +23,14 @@ test("loads and displays header ", async () => {
 });
 
 test("create spice navigates to create spice page", async () => {
-
   render(
-      <MemoryRouter initialEntries={['/']}>
-        <NavBar to="/create" />
-        <Routes>
-          <Route path='/' element={<p>home</p>} />
-          <Route path='/create' element={<p>create spice page</p>} />
-        </Routes>
-      </MemoryRouter>
+    <MemoryRouter initialEntries={["/"]}>
+      <NavBar to="/create" />
+      <Routes>
+        <Route path="/" element={<p>home</p>} />
+        <Route path="/create" element={<p>create spice page</p>} />
+      </Routes>
+    </MemoryRouter>
   );
 
   const createlink = screen.getAllByText(/Create new Spice/i);
@@ -40,5 +39,5 @@ test("create spice navigates to create spice page", async () => {
 
   await waitFor(() => {
     expect(screen.getByText(/create spice page/i)).toBeInTheDocument();
-  })
+  });
 });
