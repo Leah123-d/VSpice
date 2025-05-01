@@ -1,7 +1,7 @@
 import { render, screen, cleanup, within } from "@testing-library/react";
 import { expect, test, afterEach, jest } from "@jest/globals";
 import "@testing-library/jest-dom";
-import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter} from "react-router-dom";
 import "@testing-library/jest-dom";
 import ViewSpice from "../ViewSpice";
 

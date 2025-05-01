@@ -16,7 +16,7 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
   const [isDeleted, setIsDeleted] = useState(false);
 
   useEffect(() => {
-    if(isDeleted){
+    if (isDeleted) {
       const timer = setTimeout(() => {
         setIsDeleted(false);
       }, 3000);
@@ -199,6 +199,7 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                         <button
+                          aria-label="View-one-spice"
                           onClick={async () => {
                             await getSpices(spice.id);
                             navigate("/view");
@@ -216,6 +217,7 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                         <button
+                          aria-label="Delete"
                           onClick={async () => {
                             await deleteSpice(spice.id);
                             setIsDeleted(true);
