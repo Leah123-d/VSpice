@@ -1,10 +1,13 @@
 import fs from "fs";
 import OpenAI from "openai";
 import dotenv from "dotenv";
+import crypto from 'crypto'
 
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 
 dotenv.config();
+
+const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex')
 
 const bucketName= process.env.BUCKET_NAME;
 const bucketRegion= process.env.BUCKET_REGION;
@@ -26,11 +29,9 @@ const openai = new OpenAI({
 export const uploadImage = async (req, res) => {
   console.log("Upload route hit 🚀");
 
-  req.file.buffer
-
   const params = {
     Bucket: bucketName,
-    Key: req.file.originalname, 
+    Key: randomImageName(), 
     Body: req.file.buffer,
     ContentType: req.file.mimetype,
   }
