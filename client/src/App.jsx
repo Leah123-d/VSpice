@@ -40,7 +40,7 @@ function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ imagePath: uploadData.path }),
+        body: JSON.stringify({ filename: uploadData.filename }),
       });
       const analyzeData = await analyzeRes.json();
       console.log("analyze response:", analyzeData);
