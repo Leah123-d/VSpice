@@ -112,8 +112,8 @@ function App() {
     try {
       const url = `/spices/${id}`;
       await fetch(url, { method: "DELETE" });     
+      console.log(`spice with ${id} is successfully deleted!`);
       getSpices();
-      console.log(`spcie with ${id} is successfully deleted!`);
     }
     catch (error) {
       console.log(error);
