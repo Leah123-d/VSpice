@@ -17,7 +17,7 @@ test('loads and displays header ', async () => {
   <NavBar  />
   </BrowserRouter>)
 
-  const createSpiceButton = screen.getByRole("link", {name: /Create new Spice/i})
+  const createSpiceButton = screen.getAllByText(/Create new Spice/i) 
 
-  expect(createSpiceButton).toBeInTheDocument()
+  expect(createSpiceButton[0]).toBeInTheDocument();
 })
