@@ -1,4 +1,4 @@
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen, cleanup, fireEvent } from "@testing-library/react";
 import { expect, test, afterEach, jest } from "@jest/globals";
 import "@testing-library/jest-dom";
 import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router-dom";
@@ -28,7 +28,8 @@ test("renders create spice header", async () => {
   expect(screen.getByRole("heading")).toHaveTextContent("AI Spice Analyze");
 });
 
-test("renders shopping list header", async () => {
+test("should display error when invalid image is selected", async () => {
+  const mockedHandleUpload = jest.fn()
   render(
     <BrowserRouter>
       <CreateSpice
@@ -39,10 +40,21 @@ test("renders shopping list header", async () => {
         setIsLoading={jest.fn()}
         setIsAnalyzing={jest.fn()}
         newSpiceId={jest.fn()}
+        handleUpload={mockedHandleUpload}
       />
     </BrowserRouter>
   );
 
-  expect(screen.getByRole("heading")).toHaveTextContent("AI Spice Analyze");
-});
+  const uploadInput = screen.getByLabelText("photo-input");
+  await fireEvent.change(uploadInput, {
+    target: {
+      files: [new File(["image upload"], "test.pdf", {type: "application/pdf"})],
+    }
+  });
+  expect( await screen.findByText(
+      "Unsupported image. Please make sure your image has of one the following formats: ['png', 'jpeg', 'gif', 'webp']."
+    )
+  ).toBeInTheDocument();
 
+  expect(mockedHandleUpload).not.toHaveBeenCalled();
+});
