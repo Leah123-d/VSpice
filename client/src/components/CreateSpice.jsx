@@ -74,6 +74,7 @@ function CreateSpice({
               id="files"
               name="file"
               accept="image/*"
+              aria-label="photo-input"
             ></input>
           </span>
         </p>
