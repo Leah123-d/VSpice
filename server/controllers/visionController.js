@@ -8,7 +8,7 @@ import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3
 
 dotenv.config();
 
-const signedURL = await getSignedUrl(s3, command, {expires: 60});
+
 
 const randomImageName = (bytes = 32) =>
   crypto.randomBytes(bytes).toString("hex");
@@ -25,6 +25,8 @@ const s3 = new S3Client({
   },
   region: bucketRegion,
 });
+
+
 
 const openai = new OpenAI({
   apiKey: process.env.APIKEY,
@@ -76,6 +78,8 @@ export const analyzeImage = async (req, res) => {
       Bucket: bucketName,
       Key: filename,
     })
+
+    const signedURL = await getSignedUrl(s3, command, {expires: 60});
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
