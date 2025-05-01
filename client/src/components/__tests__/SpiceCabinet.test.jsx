@@ -20,19 +20,31 @@ test("should render heading of spice cabinet component", async () => {
 });
 
 test("should navigate to view spice component", async () => {
-
   const mockedGetSpices = jest.fn();
-  const mockedSpices = [{id: 1, name: "tumeric", brand: "Whole Foods"},{id: 2, name: "ginger", brand: "Safeway"}]
-  const mockedDisplaySpices = [{id: 1, name: "tumeric", brand: "Whole Foods"},{id: 2, name: "ginger", brand: "Safeway"}]
+  const mockedSpices = [
+    { id: 1, name: "tumeric", brand: "Whole Foods" },
+    { id: 2, name: "ginger", brand: "Safeway" },
+  ];
+  const mockedDisplaySpices = [
+    { id: 1, name: "tumeric", brand: "Whole Foods" },
+    { id: 2, name: "ginger", brand: "Safeway" },
+  ];
   const mockedDeleteSpice = jest.fn();
 
   render(
     <BrowserRouter>
-      <SpiceCabinet getSpices={mockedGetSpices} storedSpices={mockedSpices} displayedSpices={mockedDisplaySpices} deleteSpice={mockedDeleteSpice}/>
+      <SpiceCabinet
+        getSpices={mockedGetSpices}
+        storedSpices={mockedSpices}
+        displayedSpices={mockedDisplaySpices}
+        deleteSpice={mockedDeleteSpice}
+      />
     </BrowserRouter>
   );
 
-  const viewButton = screen.getAllByRole("button", {name:/view-one-spice/i})[0];
+  const viewButton = screen.getAllByRole("button", {
+    name: /view-one-spice/i,
+  })[0];
   await userEvent.click(viewButton);
 
   expect(mockedGetSpices).toHaveBeenCalled();

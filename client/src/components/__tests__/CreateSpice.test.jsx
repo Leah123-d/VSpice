@@ -1,8 +1,7 @@
 import { render, screen, cleanup, fireEvent } from "@testing-library/react";
 import { expect, test, afterEach, jest } from "@jest/globals";
 import "@testing-library/jest-dom";
-import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router-dom";
-import userEvent from "@testing-library/user-event";
+import { BrowserRouter} from "react-router-dom";
 import "@testing-library/jest-dom";
 import CreateSpice from "../CreateSpice";
 
@@ -29,7 +28,7 @@ test("renders create spice header", async () => {
 });
 
 test("should display error when invalid image is selected", async () => {
-  const mockedHandleUpload = jest.fn()
+  const mockedHandleUpload = jest.fn();
   render(
     <BrowserRouter>
       <CreateSpice
@@ -48,10 +47,13 @@ test("should display error when invalid image is selected", async () => {
   const uploadInput = screen.getByLabelText("photo-input");
   await fireEvent.change(uploadInput, {
     target: {
-      files: [new File(["image upload"], "test.pdf", {type: "application/pdf"})],
-    }
+      files: [
+        new File(["image upload"], "test.pdf", { type: "application/pdf" }),
+      ],
+    },
   });
-  expect( await screen.findByText(
+  expect(
+    await screen.findByText(
       "Unsupported image. Please make sure your image has of one the following formats: ['png', 'jpeg', 'gif', 'webp']."
     )
   ).toBeInTheDocument();
