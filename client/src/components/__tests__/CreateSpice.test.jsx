@@ -10,6 +10,24 @@ afterEach(() => {
   cleanup();
 });
 
+test("renders create spice header", async () => {
+  render(
+    <BrowserRouter>
+      <CreateSpice
+        createNewSpice={jest.fn()}
+        isLoading={jest.fn()}
+        getSpices={jest.fn()}
+        isAnalyzing={jest.fn()}
+        setIsLoading={jest.fn()}
+        setIsAnalyzing={jest.fn()}
+        newSpiceId={jest.fn()}
+      />
+    </BrowserRouter>
+  );
+
+  expect(screen.getByRole("heading")).toHaveTextContent("AI Spice Analyze");
+});
+
 test("renders shopping list header", async () => {
   render(
     <BrowserRouter>
@@ -27,3 +45,4 @@ test("renders shopping list header", async () => {
 
   expect(screen.getByRole("heading")).toHaveTextContent("AI Spice Analyze");
 });
+
