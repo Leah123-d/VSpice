@@ -19,7 +19,7 @@ function ViewSpice({ viewSpice, handleEditSpice }) {
                 {spice.name}
               </h3>
 
-              <ul className="mt-1 text-gray-500 dark:text-neutral-400">
+              <ul className="mt-1 text-gray-500 dark:text-neutral-400" aria-label="spice">
                 <ul key={spice.id}>
                   <li>Brand: {spice.brand}</li>
                   <li>Current weight: {spice.current_weight}</li>
