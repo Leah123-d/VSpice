@@ -1,26 +1,27 @@
 import fs from "fs";
 import OpenAI from "openai";
 import dotenv from "dotenv";
-import crypto from 'crypto'
-
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
+import crypto from "crypto";
+import sharp from "sharp";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 dotenv.config();
 
-const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex')
+const randomImageName = (bytes = 32) =>
+  crypto.randomBytes(bytes).toString("hex");
 
-const bucketName= process.env.BUCKET_NAME;
-const bucketRegion= process.env.BUCKET_REGION;
-const accessKey= process.env.ACCESS_KEY;
-const secretAcessKey= process.env.SECRET_ACCESS_KEY;
+const bucketName = process.env.BUCKET_NAME;
+const bucketRegion = process.env.BUCKET_REGION;
+const accessKey = process.env.ACCESS_KEY;
+const secretAcessKey = process.env.SECRET_ACCESS_KEY;
 
 const s3 = new S3Client({
   credentials: {
     accessKeyId: accessKey,
     secretAccessKey: secretAcessKey,
   },
-  region: bucketRegion
-})
+  region: bucketRegion,
+});
 
 const openai = new OpenAI({
   apiKey: process.env.APIKEY,
@@ -29,32 +30,34 @@ const openai = new OpenAI({
 export const uploadImage = async (req, res) => {
   console.log("Upload route hit 🚀");
 
-  const params = {
-    Bucket: bucketName,
-    Key: randomImageName(), 
-    Body: req.file.buffer,
-    ContentType: req.file.mimetype,
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "no file uploaded" });
+    }
+
+    const buffer = await sharp(req.file.buffer)
+      .resize({ height: 1920, width: 1080, fit: "contain" })
+      .toBuffer();
+
+    const params = {
+      Bucket: bucketName,
+      Key: randomImageName(),
+      Body: buffer,
+      ContentType: req.file.mimetype,
+    };
+
+    const command = new PutObjectCommand(params);
+    await s3.send(command);
+
+    res.json({
+      message: "file uploaded successfully",
+      path: req.file.path,
+      filename: req.file.filename,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("upload failed");
   }
-
-  const command = new PutObjectCommand(params)
-  await s3.send(command)
-
-  res.send({})
-  // try {
-  //   if (!req.file) {
-  //     return res.status(400).json({ error: "no file uploaded" });
-  //   }
-
-
-  //   res.json({
-  //     message: "file uploaded successfully",
-  //     path: req.file.path,
-  //     filename: req.file.filename,
-  //   });
-  // } catch (err) {
-  //   console.error(err);
-  //   res.status(500).send("upload failed");
-  // }
 };
 
 export const analyzeImage = async (req, res) => {
