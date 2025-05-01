@@ -3,9 +3,12 @@ import OpenAI from "openai";
 import dotenv from "dotenv";
 import crypto from "crypto";
 import sharp from "sharp";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 
 dotenv.config();
+
+const signedURL = await getSignedUrl(s3, command, {expires: 60});
 
 const randomImageName = (bytes = 32) =>
   crypto.randomBytes(bytes).toString("hex");
@@ -51,9 +54,9 @@ export const uploadImage = async (req, res) => {
 
     res.json({
       message: "file uploaded successfully",
-      path: req.file.path,
-      filename: req.file.filename,
+      filename: params.Key,
     });
+
   } catch (err) {
     console.error(err);
     res.status(500).send("upload failed");
@@ -61,15 +64,19 @@ export const uploadImage = async (req, res) => {
 };
 
 export const analyzeImage = async (req, res) => {
-  console.log("request body", req.body);
-  const { imagePath } = req.body;
+  const { filename } = req.body;
 
-  if (!imagePath) {
+  if (!filename) {
     return res.status(400).json({ error: "no file uploaded" });
   }
 
   try {
-    const base64Image = fs.readFileSync(imagePath, "base64");
+
+    const command = new GetObjectCommand({
+      Bucket: bucketName,
+      Key: filename,
+    })
+
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
@@ -83,7 +90,7 @@ export const analyzeImage = async (req, res) => {
             {
               type: "image_url",
               image_url: {
-                url: `data:image/jpeg;base64,${base64Image}`,
+                url: signedURL,
                 detail: "low",
               },
             },
