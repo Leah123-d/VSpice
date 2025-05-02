@@ -61,7 +61,7 @@ function CreateSpice({
   }, [location.pathname, setIsLoading, setIsAnalyzing, videoRef]);
 
   return (
-    <div>
+    <div className="upload-container">
       <h1>AI Spice Analyze</h1>
       {/*mobile camera input*/}
       <div className="camera">
@@ -72,10 +72,12 @@ function CreateSpice({
           <button>close</button>
         </div>
       </div>
+
       <section
         id="analyze-section"
         className="flex justify-center items-center h-screen bg-gray-50"
       >
+        {/*upload input*/}
         {imageFormatError && (
           <div
             class="mt-2 bg-red-100 border border-red-200 text-sm text-red-800 rounded-lg p-4 dark:bg-red-800/10 dark:border-red-900 dark:text-red-500"
