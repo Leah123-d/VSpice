@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function CreateSpice({
@@ -20,6 +20,9 @@ function CreateSpice({
   ];
   const [spiceImage, setSpiceImage] = useState(null);
   const [imageFormatError, setImageFormatError] = useState(false);
+  const videoRef = useRef(null);
+  const photoRef = useRef(null);
+  const [hasPhoto, setHasPhoto] = useState(false);
 
   const handleUpload = (e) => {
     const file = e.target.files[0];
@@ -31,21 +34,44 @@ function CreateSpice({
     if (!allowedImageFormats.includes(file.type)) {
       setImageFormatError(true);
       return;
-    } else{
+    } else {
       setImageFormatError(false);
     }
     setSpiceImage(file);
     createNewSpice(file);
     e.target.value = null;
   };
+
+  const getVideo = () => {
+    navigator.mediaDevices
+      .getUserMedia({ video: { width: 1920, height: 1080 } })
+      .then((stream) => {
+        let video = videoRef.current;
+        video.srcObject = stream;
+        video.play();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   useEffect(() => {
     setIsLoading(true);
     setIsAnalyzing(false);
-  }, [location.pathname, setIsLoading, setIsAnalyzing]);
+    getVideo();
+  }, [location.pathname, setIsLoading, setIsAnalyzing, videoRef]);
 
   return (
     <div>
       <h1>AI Spice Analyze</h1>
+      {/*mobile camera input*/}
+      <div className="camera">
+        <video ref={videoRef}></video>
+        <button>capture</button>
+        <div className={"result" + (hasPhoto ? "hasPhoto" : "")}>
+          <canvas ref={photoRef}></canvas>
+          <button>close</button>
+        </div>
+      </div>
       <section
         id="analyze-section"
         className="flex justify-center items-center h-screen bg-gray-50"
@@ -58,7 +84,8 @@ function CreateSpice({
             aria-labelledby="hs-soft-color-danger-label"
           >
             <span id="hs-soft-color-danger-label" class="font-bold">
-            Unsupported image. Please make sure your image has of one the following formats: ['png', 'jpeg', 'gif', 'webp'].
+              Unsupported image. Please make sure your image has of one the
+              following formats: ['png', 'jpeg', 'gif', 'webp'].
             </span>
           </div>
         )}

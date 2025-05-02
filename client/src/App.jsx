@@ -57,7 +57,6 @@ function App() {
       setNewSpiceId(newSpice.id);
       setIsLoading(false);
       setIsAnalyzing(false);
-
     } catch (error) {
       console.error("error handling spice creation: ", error);
       setErrorHandle(true);
@@ -111,11 +110,10 @@ function App() {
     console.log("deleting spice with ID:", id);
     try {
       const url = `/spices/${id}`;
-      await fetch(url, { method: "DELETE" });     
+      await fetch(url, { method: "DELETE" });
       console.log(`spice with ${id} is successfully deleted!`);
       getSpices();
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
       setErrorHandle(true);
     }
@@ -136,7 +134,11 @@ function App() {
         <Route
           path="/"
           element={
-            <SpiceCabinet storedSpices={storedSpices} getSpices={getSpices} deleteSpice={deleteSpice} />
+            <SpiceCabinet
+              storedSpices={storedSpices}
+              getSpices={getSpices}
+              deleteSpice={deleteSpice}
+            />
           }
         />
         <Route
