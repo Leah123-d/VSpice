@@ -74,6 +74,7 @@ function CreateSpice({
     ctx.drawImage(video, 0, 0, width, height);
     setHasPhoto(true);
     captureImageBlob(photo);
+    closePhoto();
     stopVideo();
   };
 
@@ -133,7 +134,12 @@ function CreateSpice({
       <button onClick={() => setCapturePhoto(true)}>take a photo</button>
       {capturePhoto && (
         <div className="camera">
-          <video ref={videoRef} className="flex justify-center items-center align-center w-md h-md "></video>
+          <div className="flex justify-center items-center w-full h-full">
+            <video
+              ref={videoRef}
+              className="w-[192px] h-[480px] object-cover rounded-lg shadow"
+            ></video>
+          </div>
           <button onClick={takePhoto}>capture</button>
           <div className={"result " + (hasPhoto ? "hasPhoto" : "")}>
             <canvas ref={photoRef} className="hidden"></canvas>
@@ -160,7 +166,13 @@ function CreateSpice({
           </div>
         )}
         <div className="image-container">
-          {spiceImage && <img src={URL.createObjectURL(spiceImage)} />}
+          {spiceImage && (
+            <img
+              src={URL.createObjectURL(spiceImage)}
+              className="w-[192px] h-[480px] object-cover mx-auto p-2 rounded-xl"
+              alt="captured spice"
+            />
+          )}
         </div>
         <p className="extra-info">
           <span>
