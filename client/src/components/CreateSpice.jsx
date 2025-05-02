@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Camera, SquareX } from "lucide-react";
 
 function CreateSpice({
   createNewSpice,
@@ -131,7 +132,9 @@ function CreateSpice({
     <div className="upload-container">
       <h1>AI Spice Analyze</h1>
       {/*mobile camera input*/}
-      <button onClick={() => setCapturePhoto(true)}>take a photo</button>
+      <button onClick={() => setCapturePhoto(true)}>
+        Take a photo with your device
+      </button>
       {capturePhoto && (
         <div className="camera">
           <div className="flex justify-center items-center w-full h-full">
@@ -140,10 +143,10 @@ function CreateSpice({
               className="w-[192px] h-[480px] object-cover rounded-lg shadow"
             ></video>
           </div>
-          <button onClick={takePhoto}>capture</button>
+          <button onClick={takePhoto}><Camera /></button>
           <div className={"result " + (hasPhoto ? "hasPhoto" : "")}>
             <canvas ref={photoRef} className="hidden"></canvas>
-            <button onClick={closePhoto}>close</button>
+            <button onClick={closePhoto}><SquareX /></button>
           </div>
         </div>
       )}
