@@ -38,7 +38,6 @@ export const createShoppingList = async (req, res) => {
                                               VALUES ($1,$2,$3) RETURNING *`,
       [spice_id, shopping_date, comments]
     );
-
     res.json(result.rows);
   } catch (error) {
     console.error(error);
@@ -59,8 +58,6 @@ export const deleteShoppingList = async (req, res) => {
     res.send(`shopping list: ${id} has been deleted`);
   } catch (error) {
     console.error(`error deleting shopping list ${id}`, error);
-    res
-      .status(500)
-      .send({ error: "internal server error" });
+    res.status(500).send({ error: "internal server error" });
   }
 };
