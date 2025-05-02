@@ -8,6 +8,10 @@
   font-family: "Space Grotesk", sans-serif;
 }
 
+html {
+  font-size: 18px;
+}
+
 h1{
   font-size: 50px;
 }
