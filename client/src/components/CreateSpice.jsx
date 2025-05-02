@@ -23,6 +23,8 @@ function CreateSpice({
   const videoRef = useRef(null);
   const photoRef = useRef(null);
   const [hasPhoto, setHasPhoto] = useState(false);
+  const [capturePhoto, setCapturePhoto] = useState(false);
+  const streamRef = useRef(null);
 
   const handleUpload = (e) => {
     const file = e.target.files[0];
@@ -43,41 +45,107 @@ function CreateSpice({
   };
 
   const getVideo = () => {
-    navigator.mediaDevices
-      .getUserMedia({ video: { width: 1920, height: 1080 } })
-      .then((stream) => {
-        let video = videoRef.current;
-        video.srcObject = stream;
-        video.play();
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    if (!videoRef.current?.srcObject) {
+      navigator.mediaDevices
+        .getUserMedia({ video: { width: 1920, height: 1080 } })
+        .then((stream) => {
+          let video = videoRef.current;
+          streamRef.current = stream;
+          video.srcObject = stream;
+          video.play();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   };
+
+  const takePhoto = () => {
+    const width = 414;
+    const height = width / (16 / 9);
+
+    let video = videoRef.current;
+    let photo = photoRef.current;
+
+    photo.width = width;
+    photo.height = height;
+
+    let ctx = photo.getContext("2d");
+    ctx.drawImage(video, 0, 0, width, height);
+    setHasPhoto(true);
+    captureImageBlob(photo);
+    stopVideo();
+  };
+
+  const captureImageBlob = (photo) => {
+    photo.toBlob((blob) => {
+      if (blob) {
+        console.log("captured blob: ", blob);
+        const file = new File([blob], "photo.jpg", { type: "image/jpeg" });
+        setSpiceImage(file);
+        createNewSpice(file);
+      } else {
+        console.error("failed to capture image");
+      }
+    }, "image/jpeg");
+  };
+
+  const closePhoto = () => {
+    let photo = photoRef.current;
+    let ctx = photo.getContext("2d");
+    ctx.clearRect(0, 0, photo.width, photo.height);
+    setHasPhoto(false);
+    setCapturePhoto(false);
+    stopVideo();
+  };
+
+  const stopVideo = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => {
+        track.stop();
+      });
+      streamRef.current = null;
+      if (videoRef.current) {
+        videoRef.current.srcObject = null;
+      }
+      console.log("camera has stopped");
+    }
+  };
+
+  useEffect(() => {
+    if (capturePhoto) {
+      getVideo();
+    }
+    return () => {
+      stopVideo();
+    };
+  }, [capturePhoto]);
+
   useEffect(() => {
     setIsLoading(true);
     setIsAnalyzing(false);
-    getVideo();
-  }, [location.pathname, setIsLoading, setIsAnalyzing, videoRef]);
+  }, [location.pathname, setIsLoading, setIsAnalyzing]);
 
   return (
     <div className="upload-container">
       <h1>AI Spice Analyze</h1>
       {/*mobile camera input*/}
-      <div className="camera">
-        <video ref={videoRef}></video>
-        <button>capture</button>
-        <div className={"result" + (hasPhoto ? "hasPhoto" : "")}>
-          <canvas ref={photoRef}></canvas>
-          <button>close</button>
+      <button onClick={() => setCapturePhoto(true)}>take a photo</button>
+      {capturePhoto && (
+        <div className="camera">
+          <video ref={videoRef} className="flex justify-center items-center align-center w-md h-md "></video>
+          <button onClick={takePhoto}>capture</button>
+          <div className={"result " + (hasPhoto ? "hasPhoto" : "")}>
+            <canvas ref={photoRef} className="hidden"></canvas>
+            <button onClick={closePhoto}>close</button>
+          </div>
         </div>
-      </div>
-
+      )}
+      {/*upload input*/}
       <section
         id="analyze-section"
         className="flex justify-center items-center h-screen bg-gray-50"
       >
-        {/*upload input*/}
         {imageFormatError && (
           <div
             class="mt-2 bg-red-100 border border-red-200 text-sm text-red-800 rounded-lg p-4 dark:bg-red-800/10 dark:border-red-900 dark:text-red-500"
