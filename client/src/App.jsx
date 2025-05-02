@@ -100,6 +100,7 @@ function App() {
       }
       console.log("update successful!");
       getSpices(id);
+      getSpices();
     } catch (error) {
       console.log(error);
     }
