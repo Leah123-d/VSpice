@@ -182,10 +182,10 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                         {spice.brand}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                        {spice.full_weight}
+                        {spice.full_weight ? spice.full_weight + " g" : ""} 
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                        {spice.current_weight}
+                        {spice.current_weight ? spice.current_weight + " g" : ""} 
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                         {spice.expiration_date}

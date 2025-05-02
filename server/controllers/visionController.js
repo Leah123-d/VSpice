@@ -4,11 +4,13 @@ import dotenv from "dotenv";
 import crypto from "crypto";
 import sharp from "sharp";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
 
 dotenv.config();
-
-
 
 const randomImageName = (bytes = 32) =>
   crypto.randomBytes(bytes).toString("hex");
@@ -25,8 +27,6 @@ const s3 = new S3Client({
   },
   region: bucketRegion,
 });
-
-
 
 const openai = new OpenAI({
   apiKey: process.env.APIKEY,
@@ -58,7 +58,6 @@ export const uploadImage = async (req, res) => {
       message: "file uploaded successfully",
       filename: params.Key,
     });
-
   } catch (err) {
     console.error(err);
     res.status(500).send("upload failed");
@@ -73,13 +72,12 @@ export const analyzeImage = async (req, res) => {
   }
 
   try {
-
     const command = new GetObjectCommand({
       Bucket: bucketName,
       Key: filename,
-    })
+    });
 
-    const signedURL = await getSignedUrl(s3, command, {expires: 60});
+    const signedURL = await getSignedUrl(s3, command, { expires: 60 });
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
@@ -89,7 +87,12 @@ export const analyzeImage = async (req, res) => {
           content: [
             {
               type: "text",
-              text: "Please analyze this spice photo and extract the following fields in strict JSON format: name (string), brand (string), full_weight in grams (number), current_weight (number), expiration_date (string in YYYY-MM-DD or null), last_purchased (string in YYYY-MM-DD or null). If any info is missing or unreadable, use null. No extra text, no explanation—just the JSON object.",
+              text: `Please analyze this spice photo and extract the following fields in strict JSON format:- name (string), - brand (string), 
+                      - full_weight in grams (number), 
+                      - current_weight in grams (number; estimate based on visible spice amount in the jar), 
+                      - expiration_date (string in YYYY-MM-DD or null), 
+                      - last_purchased (string in YYYY-MM-DD or null). 
+                      Assume the spice jar is approximately 2 inches in diameter and 5 inches tall. Use visual cues such as fill level and container size to estimate current_weight. If any info is missing or unreadable, use null. No extra text, no explanation—just the JSON object.`,
             },
             {
               type: "image_url",
