@@ -20,7 +20,7 @@ export const getShoppingList = async (req, res) => {
 export const getPastShoppingLists = async (req, res) => {
   try {
     const result = await dbConnection.query(
-      `SELECT * FROM shopping_list ORDER BY shopping_date  `
+      `SELECT * FROM shopping_list ORDER BY shopping_date`
     );
     res.json(result.rows);
   } catch (error) {
