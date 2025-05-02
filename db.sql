@@ -1,9 +1,8 @@
---
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.15 (Homebrew)
--- Dumped by pg_dump version 14.15 (Homebrew)
+-- Dumped from database version 13.3
+-- Dumped by pg_dump version 14.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,266 +20,106 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: shopping_list; Type: TABLE; Schema: public; Owner: leahputlek
---
-
-CREATE TABLE public.shopping_list (
-    id integer NOT NULL,
-    spice_id integer,
-    user_id integer NOT NULL,
-    shopping_date date,
-    comments text,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_on timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
-);
-
-
-ALTER TABLE public.shopping_list OWNER TO leahputlek;
-
---
--- Name: shopping_list_id_seq; Type: SEQUENCE; Schema: public; Owner: leahputlek
---
-
-CREATE SEQUENCE public.shopping_list_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.shopping_list_id_seq OWNER TO leahputlek;
-
---
--- Name: shopping_list_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: leahputlek
---
-
-ALTER SEQUENCE public.shopping_list_id_seq OWNED BY public.shopping_list.id;
-
-
---
--- Name: spices; Type: TABLE; Schema: public; Owner: leahputlek
---
-
-CREATE TABLE public.spices (
-    id integer NOT NULL,
-    name character varying(255) NOT NULL,
-    brand character varying(255),
-    full_weight character varying(255),
-    current_weight character varying(255),
-    expiration_date date,
-    last_purchased date,
-    notes character varying(255),
-    inactive boolean DEFAULT false,
-    user_id integer,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_on timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
-);
-
-
-ALTER TABLE public.spices OWNER TO leahputlek;
-
---
--- Name: spices_id_seq; Type: SEQUENCE; Schema: public; Owner: leahputlek
---
-
-CREATE SEQUENCE public.spices_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.spices_id_seq OWNER TO leahputlek;
-
---
--- Name: spices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: leahputlek
---
-
-ALTER SEQUENCE public.spices_id_seq OWNED BY public.spices.id;
-
-
---
--- Name: users; Type: TABLE; Schema: public; Owner: leahputlek
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.users (
-    id integer NOT NULL,
-    email character varying(255) NOT NULL,
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
-    updated_on timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at timestamp NOT NULL DEFAULT NOW(),
+    updated_on timestamp default CURRENT_TIMESTAMP not null
+);
+
+--
+-- Name: spices; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.spices (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    brand VARCHAR(255),
+    full_weight VARCHAR(255),
+    current_weight VARCHAR(255),
+    expiration_date DATE,
+    last_purchased DATE,
+    notes VARCHAR(255),
+    inactive BOOLEAN DEFAULT FALSE, 
+    user_id INTEGER REFERENCES public.users(id),
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_user_spice FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+
+--
+-- Name: shopping_lists; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.shopping_lists(
+    id SERIAL PRIMARY KEY,
+    spice_id INTEGER REFERENCES public.spices(id),
+    user_id INTEGER REFERENCES public.users(id) NOT NULL,
+    shopping_date DATE,
+    comments TEXT,
+    created_at timestamp NOT NULL DEFAULT NOW(),
+    updated_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 
-ALTER TABLE public.users OWNER TO leahputlek;
-
 --
--- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: leahputlek
+-- Name: list_items; Type: TABLE; Schema: public; Owner: leahputlek
 --
 
-CREATE SEQUENCE public.users_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.users_id_seq OWNER TO leahputlek;
-
---
--- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: leahputlek
---
-
-ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
-
+CREATE TABLE public.shopping_list_items (
+    id integer NOT NULL,
+    shopping_list_id integer NOT NULL,
+    spice_id integer NOT NULL,
+    quantity integer,
+    name VARCHAR(255),
+    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    updated_on timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    CONSTRAINT fk_shopping_lists FOREIGN KEY (shopping_list_id) REFERENCES public.shopping_lists(id),
+    CONSTRAINT fk_spice FOREIGN KEY (spice_id) REFERENCES public.spices(id)
+);
 
 --
--- Name: shopping_list id; Type: DEFAULT; Schema: public; Owner: leahputlek
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
-
-ALTER TABLE ONLY public.shopping_list ALTER COLUMN id SET DEFAULT nextval('public.shopping_list_id_seq'::regclass);
-
-
---
--- Name: spices id; Type: DEFAULT; Schema: public; Owner: leahputlek
---
-
-ALTER TABLE ONLY public.spices ALTER COLUMN id SET DEFAULT nextval('public.spices_id_seq'::regclass);
-
+INSERT INTO public.users (email)
+VALUES 
+    ('user1@email.com'),
+    ('user2@email.com'),
+    ('user3@email.com');
 
 --
--- Name: users id; Type: DEFAULT; Schema: public; Owner: leahputlek
+-- Data for Name: spices; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+INSERT INTO public.spices (name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id)
+VALUES
+  ('ginger', 'O-Organics', '55', '50', null, null, 'great for ginger tea', false, 2),
+  ('black-pepper', 'safeway', '55', '20', null, null, 'you like whole peppercorns', false, 2),
+  ('pumpkin-spice', 'O-Organics', '55', '40', null, null, 'seasonal', false, 2);
 
-
+   
 --
--- Data for Name: shopping_list; Type: TABLE DATA; Schema: public; Owner: leahputlek
---
-
-INSERT INTO public.shopping_list (id, spice_id, user_id, shopping_date, comments, created_at, updated_on) VALUES (1, 1, 1, '2025-10-01', 'buy the grinder type jar', '2025-04-22 17:59:05.478792', '2025-04-22 17:59:05.478792');
-INSERT INTO public.shopping_list (id, spice_id, user_id, shopping_date, comments, created_at, updated_on) VALUES (2, 2, 1, '2025-05-09', 'buy the smallest jar', '2025-04-22 17:59:05.478792', '2025-04-22 17:59:05.478792');
-INSERT INTO public.shopping_list (id, spice_id, user_id, shopping_date, comments, created_at, updated_on) VALUES (3, 1, 2, '2025-01-01', 'pink pepper', '2025-04-22 17:59:05.478792', '2025-04-22 17:59:05.478792');
-INSERT INTO public.shopping_list (id, spice_id, user_id, shopping_date, comments, created_at, updated_on) VALUES (4, 2, 2, '2025-04-21', 'buy largest jar', '2025-04-22 17:59:05.478792', '2025-04-22 17:59:05.478792');
-INSERT INTO public.shopping_list (id, spice_id, user_id, shopping_date, comments, created_at, updated_on) VALUES (5, 3, 1, '2025-04-09', 'located on aisle 14', '2025-04-22 17:59:05.478792', '2025-04-22 17:59:05.478792');
-
-
---
--- Data for Name: spices; Type: TABLE DATA; Schema: public; Owner: leahputlek
+-- Data for Name: shopping_lists; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (2, 'black-pepper', 'safeway', '55', '5', NULL, NULL, 'you like whole peppercorns', false, 2, '2025-04-22 17:59:05.472108', '2025-04-22 17:59:05.472108');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (6, 'Fall Spices', 'Whole Foods', '55', '', NULL, '2025-04-30', '', NULL, NULL, '2025-04-23 14:37:17.963377', '2025-04-23 14:37:17.963377');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (1, 'Galanga', 'O-Organics', '55', '50', NULL, '2025-04-29', 'great for chicken noodle soup', false, 2, '2025-04-22 17:59:05.472108', '2025-04-22 17:59:05.472108');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (4, 'Seasonal Fall Pumpkin', 'Simply Organic', '55', '', NULL, '1970-01-01', '', NULL, NULL, '2025-04-23 12:01:12.991491', '2025-04-23 12:01:12.991491');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (5, 'Adobo All Purpose Seasoning', 'Goya', '226', '', NULL, '2025-04-22', '', NULL, NULL, '2025-04-23 12:02:15.515762', '2025-04-23 12:02:15.515762');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (3, 'pumpkin-spice', 'O-Organics', '55', '25', NULL, '1970-01-01', 'seasonal', false, 2, '2025-04-22 17:59:05.472108', '2025-04-22 17:59:05.472108');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (7, 'Adobo All Purpose Seasoning', 'Goya', '226', NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-25 11:11:20.723314', '2025-04-25 11:11:20.723314');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (8, 'Adobo All Purpose Seasoning', 'Goya', '226', NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-25 11:26:02.264354', '2025-04-25 11:26:02.264354');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (9, 'Adobo All Purpose Seasoning', 'Goya', '226', NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-25 11:28:04.761069', '2025-04-25 11:28:04.761069');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (10, 'Adobo All Purpose Seasoning', 'Goya', '226', NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-25 11:41:01.115685', '2025-04-25 11:41:01.115685');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (11, 'pumpkin spice', 'Simply Organic', '55', NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-25 11:46:20.608527', '2025-04-25 11:46:20.608527');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (12, 'Adobo All Purpose Seasoning', 'Goya', '226', NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-25 12:00:47.299018', '2025-04-25 12:00:47.299018');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (13, 'pumpkin spice', 'Simply Organic', '55', NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-25 12:03:22.771218', '2025-04-25 12:03:22.771218');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (14, 'Adobo All Purpose Seasoning', 'Goya', '226', NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-25 12:13:08.90896', '2025-04-25 12:13:08.90896');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (15, 'Adobo All Purpose Seasoning', 'Goya', '226', NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-25 12:19:12.023861', '2025-04-25 12:19:12.023861');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (16, 'pumpkin spice', 'Simply Organic', '55', NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-25 12:20:50.05867', '2025-04-25 12:20:50.05867');
-INSERT INTO public.spices (id, name, brand, full_weight, current_weight, expiration_date, last_purchased, notes, inactive, user_id, created_at, updated_on) VALUES (17, 'Adobo All Purpose Seasoning', 'Goya', '226', NULL, NULL, NULL, NULL, NULL, NULL, '2025-04-25 12:22:30.853883', '2025-04-25 12:22:30.853883');
-
+INSERT INTO public.shopping_lists (id, user_id, shopping_date, comments) VALUES (1, 1, '2025-10-01', 'buy the grinder type jar');
+INSERT INTO public.shopping_lists (id, user_id, shopping_date, comments) VALUES (2, 2, '2025-05-09', 'buy the smallest jar');
+INSERT INTO public.shopping_lists (id, user_id, shopping_date, comments) VALUES (3, 1, '2025-01-01', 'pink pepper');
+INSERT INTO public.shopping_lists (id, user_id, shopping_date, comments) VALUES (4, 2, '2025-04-21', 'buy largest jar');
+INSERT INTO public.shopping_lists (id, user_id, shopping_date, comments) VALUES (5, 3, '2025-04-09', 'located on aisle 14');
 
 --
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: leahputlek
+-- Data for Name: list_items; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.users (id, email, created_at, updated_on) VALUES (1, 'user1@email.com', '2025-04-22 17:59:05.467411', '2025-04-22 17:59:05.467411');
-INSERT INTO public.users (id, email, created_at, updated_on) VALUES (2, 'user2@email.com', '2025-04-22 17:59:05.467411', '2025-04-22 17:59:05.467411');
-INSERT INTO public.users (id, email, created_at, updated_on) VALUES (3, 'user3@email.com', '2025-04-22 17:59:05.467411', '2025-04-22 17:59:05.467411');
+INSERT INTO public.shopping_list_items (id, shopping_list_id, spice_id, quantity, name) VALUES (1, 2, 1, 1, 'seasonal');
+INSERT INTO public.shopping_list_items (id, shopping_list_id, spice_id, quantity, name) VALUES (2, 2, 2, 1, 'winter'); 
+INSERT INTO public.shopping_list_items (id, shopping_list_id, spice_id, quantity, name) VALUES (3, 2, 3, 1, 'quick trip'); 
+INSERT INTO public.shopping_list_items (id, shopping_list_id, spice_id, quantity, name) VALUES (4, 3, 1, 1, 'night'); 
+INSERT INTO public.shopping_list_items (id, shopping_list_id, spice_id, quantity, name) VALUES (5, 3, 2, 1, 'afternoon'); 
 
-
---
--- Name: shopping_list_id_seq; Type: SEQUENCE SET; Schema: public; Owner: leahputlek
---
-
-SELECT pg_catalog.setval('public.shopping_list_id_seq', 5, true);
-
-
---
--- Name: spices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: leahputlek
---
-
-SELECT pg_catalog.setval('public.spices_id_seq', 17, true);
-
-
---
--- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: leahputlek
---
-
-SELECT pg_catalog.setval('public.users_id_seq', 3, true);
-
-
---
--- Name: shopping_list shopping_list_pkey; Type: CONSTRAINT; Schema: public; Owner: leahputlek
---
-
-ALTER TABLE ONLY public.shopping_list
-    ADD CONSTRAINT shopping_list_pkey PRIMARY KEY (id);
-
-
---
--- Name: spices spices_pkey; Type: CONSTRAINT; Schema: public; Owner: leahputlek
---
-
-ALTER TABLE ONLY public.spices
-    ADD CONSTRAINT spices_pkey PRIMARY KEY (id);
-
-
---
--- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: leahputlek
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_email_key UNIQUE (email);
-
-
---
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: leahputlek
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: shopping_list shopping_list_spice_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: leahputlek
---
-
-ALTER TABLE ONLY public.shopping_list
-    ADD CONSTRAINT shopping_list_spice_id_fkey FOREIGN KEY (spice_id) REFERENCES public.spices(id);
-
-
---
--- Name: shopping_list shopping_list_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: leahputlek
---
-
-ALTER TABLE ONLY public.shopping_list
-    ADD CONSTRAINT shopping_list_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
-
-
---
--- Name: spices spices_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: leahputlek
---
-
-ALTER TABLE ONLY public.spices
-    ADD CONSTRAINT spices_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
-
-
---
 -- PostgreSQL database dump complete
 --
-
