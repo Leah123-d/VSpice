@@ -63,13 +63,18 @@ function EditSpice({ viewSpice, editSpice }) {
   }
 
   return (
-    <div className="formContainer">
-      <div className="max-w-s h-auto flex flex-col bg-white border border-gray-200 border-t-4 border-t-blue-600 shadow-2xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:border-t-blue-500 dark:shadow-neutral-700/70">
+    <div className="formContainer flex justify-center items-center min-h-screen">
+      <div className="max-w-xs h-auto flex flex-col bg-white border border-gray-200 border-t-4 border-t-blue-600 shadow-2xs rounded-xl dark:bg-neutral-900 dark:border-neutral-700 dark:border-t-blue-500 dark:shadow-neutral-700/70">
         <div className="p-4 md:p-5 mb-4">
           <h3 className="text-lg font-bold text-gray-800 dark:text-white">
             {initialState.name}
           </h3>
-            <form onSubmit={onSubmit} ref={formRef} className="mt-2 text-gray-500 dark:text-neutral-400">
+          <form
+            onSubmit={onSubmit}
+            ref={formRef}
+            className="mt-2 text-gray-500 dark:text-neutral-400"
+          >
+            <div className="flex flex-col">
               <label htmlFor="name">Edit name:</label>
               <input
                 id="name"
@@ -77,37 +82,43 @@ function EditSpice({ viewSpice, editSpice }) {
                 name="name"
                 value={formState.name}
                 onChange={formChange}
+                className="notes border-2 rounded-lg p-2"
               />
-              <label htmlFor="brand">Edit brand:{initialState.brand}</label>
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="brand">Edit brand:</label>
               <input
                 id="brand"
                 type="text"
                 name="brand"
                 value={formState.brand}
                 onChange={formChange}
+                className="notes border-2 rounded-lg p-2"
               />
-              <label htmlFor="current_weight">
-              Edit current weight:{initialState.current_weight}
-              </label>
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="current_weight">Edit current weight:</label>
               <input
                 id="current_weight"
                 type="text"
                 name="current_weight"
                 value={formState.current_weight}
                 onChange={formChange}
-                className="current_weight"
+                className="notes border-2 rounded-lg p-2"
               />
-              <label htmlFor="last_purchased">
-              Edit last purchased:{initialState.last_purchased}
-              </label>
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="last_purchased">Edit last purchased date:</label>
               <input
                 id="last_purchased"
                 type="date"
                 name="last_purchased"
                 value={formState.formattedDate}
                 onChange={formChange}
-                className="last_purchased"
+                className="notes border-2 rounded-lg p-2"
               />
+            </div>
+            <div className="flex flex-col">
               <label htmlFor="notes">Edit notes:{initialState.notes}</label>
               <input
                 id="notes"
@@ -115,15 +126,16 @@ function EditSpice({ viewSpice, editSpice }) {
                 name="notes"
                 value={formState.notes}
                 onChange={formChange}
-                className="notes"
+                className="notes border-2 rounded-lg p-2"
               />
-              <button
-                type="submit"
-                className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
-              >
-                save changes
-              </button>
-            </form>
+            </div>
+            <button
+              type="submit"
+              className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
+            >
+              save changes
+            </button>
+          </form>
         </div>
       </div>
     </div>

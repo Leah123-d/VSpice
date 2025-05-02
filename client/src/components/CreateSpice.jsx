@@ -179,7 +179,7 @@ function CreateSpice({
         </div>
         <p className="extra-info">
           <span>
-            <label htmlFor="files"></label>
+            <label htmlFor="files" className="hidden">photo-upload</label>
             <input
               onChange={handleUpload}
               type="file"

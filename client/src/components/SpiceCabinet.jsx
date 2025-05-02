@@ -74,7 +74,7 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                   >
                     <div className="flex items-center gap-x-1">
                       Name
-                      <button onClick={() => sortSpices("name")}>
+                      <button onClick={() => sortSpices("name")} aria-label="sort">
                         {sortKey === "name" ? (
                           isAscending ? (
                             <ChevronUp size={16} />
@@ -93,7 +93,7 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                   >
                     <div className="flex items-center gap-x-1">
                       Brand
-                      <button onClick={() => sortSpices("brand")}>
+                      <button onClick={() => sortSpices("brand")} aria-label="sort">
                         {sortKey === "brand" ? (
                           isAscending ? (
                             <ChevronUp size={16} />
@@ -118,7 +118,7 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                   >
                     <div className="flex items-center gap-x-1">
                       Current weight
-                      <button onClick={() => sortSpices("current_weight")}>
+                      <button onClick={() => sortSpices("current_weight")} aria-label="sort">
                         {sortKey === "current_weight" ? (
                           isAscending ? (
                             <ChevronUp size={16} />
@@ -143,7 +143,7 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                   >
                     <div className="flex items-center gap-x-1">
                       Last Purchased
-                      <button onClick={() => sortSpices("last_purchased")}>
+                      <button onClick={() => sortSpices("last_purchased")} aria-label="sort">
                         {sortKey === "last_purchased" ? (
                           isAscending ? (
                             <ChevronUp size={16} />
