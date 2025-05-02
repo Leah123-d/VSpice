@@ -31,9 +31,6 @@ function App() {
         body: formData,
       });
       const uploadData = await res.json();
-      if (!uploadData.path) {
-        console.error("upload did not return valid path");
-      }
       setIsLoading(true);
       setIsAnalyzing(true);
       const analyzeRes = await fetch("/vision/analyze", {
@@ -57,6 +54,7 @@ function App() {
       setNewSpiceId(newSpice.id);
       setIsLoading(false);
       setIsAnalyzing(false);
+      getSpices();
     } catch (error) {
       console.error("error handling spice creation: ", error);
       setErrorHandle(true);
