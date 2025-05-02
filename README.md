@@ -169,3 +169,7 @@ App will be available at: [http://localhost:5173](http://localhost:5173/)
 - Implement soft deletion (trash bin with restore feature)
 - Integrate Google Places API for store/location-based spice suggestions
 - Add user authentication and private spice collections
+
+## Preview
+![spice-cabinet-walkthrough](https://github.com/user-attachments/assets/5f02d123-3b1d-481d-b12b-21a6f2890883)
+
