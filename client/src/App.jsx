@@ -14,8 +14,8 @@ function App() {
   const [errorHandle, setErrorHandle] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [storedSpices, setStoredSpices] = useState(null);
+  const [viewSpice, setViewSpice] =  useState(null);
   const [viewSpice, setViewSpice] = useState(null);
-
   const handleEditSpice = (id) => {
     console.log(id);
     getSpices(id);
@@ -46,6 +46,11 @@ function App() {
       });
       const analyzeData = await analyzeRes.json();
       console.log("analyze response:", analyzeData);
+
+      const createSpiceInDB = console.log(
+        "inside create spice function",
+        analyzeData
+      );
       await fetch("/spices", {
         method: "POST",
         headers: {
@@ -54,6 +59,10 @@ function App() {
         body: JSON.stringify(analyzeData),
       });
       const response = await fetch("/spices");
+      const newSpice = await response.json();
+      console.log("create spice response", newSpice);
+      setSpiceAnalyze(newSpice);
+      setIsLoading(false);
       const data = await response.json();
       console.log("create spice response", data);
     } catch (error) {
@@ -70,6 +79,10 @@ function App() {
 
       const data = await res.json();
       console.log("fetched spices: ", data);
+      if(id){
+        setViewSpice(data);
+        return data;
+      }else{
       if (id) {
         setViewSpice(data);
         return data;
@@ -103,7 +116,6 @@ function App() {
     }
 
   }
-
   useEffect(() => {
     getSpices();
   }, []);
@@ -112,6 +124,10 @@ function App() {
     <div>
       <NavBar />
       <Routes>
+        <Route path="/" element={<SpiceCabinet storedSpices={storedSpices} getSpices={getSpices}/>} />
+        <Route
+          path="view"
+          element={<ViewSpice viewSpice={viewSpice}/>}
         <Route
           path="/"
           element={
