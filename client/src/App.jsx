@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import "./styles.css";
 import CreateSpice from "./components/CreateSpice";
 import ViewSpice from "./components/ViewSpice";
@@ -17,6 +18,7 @@ function App() {
   const [viewSpice, setViewSpice] =  useState(null);
   const [viewSpice, setViewSpice] = useState(null);
   const [newSpiceId, setNewSpiceId] = useState(null);
+  const navigate = useNavigate();
 
   const handleEditSpice = (id) => {
     console.log(id);
@@ -58,6 +60,7 @@ function App() {
     } catch (error) {
       console.error("error handling spice creation: ", error);
       setErrorHandle(true);
+      navigate("/error");
     }
   };
   const getSpices = async (id) => {
@@ -169,7 +172,12 @@ function App() {
           element={<EditSpice editSpice={editSpice} viewSpice={viewSpice} />}
         />
         <Route path="shopping" element={<ShoppingList />} />
-        <Route path="*" element={<ErrorHandle />} />
+        <Route 
+          path="/error" 
+          element={<ErrorHandle errorHandle={errorHandle}/>} />
+        <Route 
+          path="*" 
+          element={<ErrorHandle />} />
       </Routes>
     </div>
   );
