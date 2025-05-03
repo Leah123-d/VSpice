@@ -82,7 +82,7 @@ function App() {
       } else {
         setStoredSpices(data);
       }
-    } catch (error) {
+    }} catch (error) {
       console.error("Error fetchig posts: ", error);
       setErrorHandle(true);
       return [];
@@ -132,7 +132,7 @@ function App() {
         <Route path="/" element={<SpiceCabinet storedSpices={storedSpices} getSpices={getSpices}/>} />
         <Route
           path="view"
-          element={<ViewSpice viewSpice={viewSpice}/>}
+          element={<ViewSpice viewSpice={viewSpice}/>}/>
         <Route
           path="/"
           element={
