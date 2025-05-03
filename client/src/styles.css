@@ -5,8 +5,16 @@
   margin: 0 auto;
   padding: 1.5rem;
   text-align: center;
+  font-family: "Space Grotesk", sans-serif;
 }
 
+h1{
+  font-size: 50px;
+}
+
+button{
+  cursor: pointer;
+}
 
 input {
   margin-top: 1rem;
@@ -29,5 +37,15 @@ input::file-selector-button {
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
 }
+
+.upload-container{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+
 
 
