@@ -1,11 +1,6 @@
-import { X } from "lucide-react";
-import { useState } from "react";
 import { useNavigate } from "react-router";
 function ViewSpice({ viewSpice, handleEditSpice }) {
-  //can add the math for current weight here and display that as a status
   const navigate = useNavigate();
-
-  console.log("in view spice component", viewSpice);
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-2xs sm:flex dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
@@ -16,16 +11,14 @@ function ViewSpice({ viewSpice, handleEditSpice }) {
           alt="Card Image"
         />
       </div>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap" id="view-spice">
         {viewSpice &&
           viewSpice.map((spice) => (
             <div key={spice.id} className="p-4 flex flex-col h-full sm:p-7">
-              <h3
-                
-                className="text-lg font-bold text-gray-800 dark:text-white"
-              >
+              <h3 className="text-lg font-bold text-gray-800 dark:text-white">
                 {spice.name}
               </h3>
+
               <ul className="mt-1 text-gray-500 dark:text-neutral-400">
                 <ul key={spice.id}>
                   <li>Brand: {spice.brand}</li>
@@ -36,9 +29,23 @@ function ViewSpice({ viewSpice, handleEditSpice }) {
               </ul>
               <div className="mt-5 sm:mt-auto">
                 <button
-                  onClick={async () => {await handleEditSpice(spice.id); navigate('/edit')}}
-                  type="button" className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20">
+                  onClick={async () => {
+                    await handleEditSpice(spice.id);
+                    navigate("/edit");
+                  }}
+                  type="button"
+                  className="m-2 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
+                >
                   Edit
+                </button>
+                <button
+                  onClick={async () => {
+                    await navigate("/");
+                  }}
+                  type="button"
+                  className="m-2 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-100 text-blue-800 hover:bg-blue-200 focus:outline-hidden focus:bg-blue-200 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-400 dark:bg-blue-800/30 dark:hover:bg-blue-800/20 dark:focus:bg-blue-800/20"
+                >
+                  Close
                 </button>
               </div>
             </div>
