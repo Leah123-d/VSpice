@@ -15,7 +15,6 @@ function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [storedSpices, setStoredSpices] = useState(null);
   const [viewSpice, setViewSpice] =  useState(null);
-  const [viewSpice, setViewSpice] = useState(null);
   const [newSpiceId, setNewSpiceId] = useState(null);
 
   const handleEditSpice = (id) => {
@@ -79,7 +78,8 @@ function App() {
       } else {
         setStoredSpices(data);
       }
-    } catch (error) {
+    }
+   } catch (error) {
       console.error("Error fetchig posts: ", error);
       setErrorHandle(true);
       return [];
@@ -128,7 +128,7 @@ function App() {
         <Route path="/" element={<SpiceCabinet storedSpices={storedSpices} getSpices={getSpices}/>} />
         <Route
           path="view"
-          element={<ViewSpice viewSpice={viewSpice}/>}
+          element={<ViewSpice viewSpice={viewSpice}/>}/>
         <Route
           path="/"
           element={
