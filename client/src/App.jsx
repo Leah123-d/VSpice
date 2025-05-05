@@ -16,7 +16,6 @@ function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [storedSpices, setStoredSpices] = useState(null);
   const [viewSpice, setViewSpice] =  useState(null);
-  const [viewSpice, setViewSpice] = useState(null);
   const [newSpiceId, setNewSpiceId] = useState(null);
   const navigate = useNavigate();
 
