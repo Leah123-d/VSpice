@@ -15,8 +15,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [storedSpices, setStoredSpices] = useState(null);
-  const [viewSpice, setViewSpice] =  useState(null);
+  const [viewSpice, setViewSpice] = useState(null);
   const [newSpiceId, setNewSpiceId] = useState(null);
+  const [searchResult, setSearchResult] = useState(null);
   const navigate = useNavigate();
 
   const handleEditSpice = (id) => {
@@ -71,17 +72,18 @@ function App() {
 
       const data = await res.json();
       console.log("fetched spices: ", data);
-      if(id){
-        setViewSpice(data);
-        return data;
-      }else{
       if (id) {
         setViewSpice(data);
         return data;
       } else {
-        setStoredSpices(data);
+        if (id) {
+          setViewSpice(data);
+          return data;
+        } else {
+          setStoredSpices(data);
+        }
       }
-    }} catch (error) {
+    } catch (error) {
       console.error("Error fetchig posts: ", error);
       setErrorHandle(true);
       return [];
@@ -135,6 +137,8 @@ function App() {
               storedSpices={storedSpices}
               getSpices={getSpices}
               deleteSpice={deleteSpice}
+              searchResult={searchResult}
+              setSearchResult={setSearchResult}
             />
           }
         />
@@ -163,16 +167,15 @@ function App() {
           }
         />
         <Route
-          path="edit"
+          path="/edit"
           element={<EditSpice editSpice={editSpice} viewSpice={viewSpice} />}
         />
         <Route path="shopping" element={<ShoppingList />} />
-        <Route 
-          path="/error" 
-          element={<ErrorHandle errorHandle={errorHandle}/>} />
-        <Route 
-          path="*" 
-          element={<ErrorHandle />} />
+        <Route
+          path="/error"
+          element={<ErrorHandle errorHandle={errorHandle} />}
+        />
+        <Route path="*" element={<ErrorHandle />} />
       </Routes>
     </div>
   );

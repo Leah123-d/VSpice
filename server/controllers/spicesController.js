@@ -105,12 +105,13 @@ export const deleteSpice = async (req, res) => {
 };
 
 export const searchSpices = async (req, res) => {
-
-  const { name } = req.params.name.toLowerCase();
-
+  const { name } = req.params;
+  if(!name){
+    return res.status(400).send({error: "spice name is required"});
+  }
   try {
     const result = await dbConnection.query(
-      `SELECT * FROM spices WHERE name =  $1`,
+      `SELECT * FROM spices WHERE name ILIKE $1`,
       [`%${name}%`]
     );
     if (result.rowCount === 0) {
