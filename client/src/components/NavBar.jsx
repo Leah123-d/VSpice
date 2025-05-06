@@ -19,7 +19,7 @@ function NavBar() {
         <div className="relative flex flex-col h-full max-h-full ">
           <header className="p-4 flex justify-between items-center gap-x-2">
             <a
-              className=" active flex-none font-semibold text-xl text-black focus:outline-hidden focus:opacity-80 dark:text-white"
+              className="active flex-none font-semibold text-xl text-black focus:outline-hidden focus:opacity-80 dark:text-white"
               aria-label="Title"
             >
               Welcome to VSpice!
@@ -32,17 +32,30 @@ function NavBar() {
                   <NavLink
                     to="/"
                     end
-                    className="flex items-center gap-x-3.5 py-2 px-2.5 bg-gray-100 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-white"
+                    className={({ isActive }) =>
+                      `flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg
+                    ${
+                      isActive
+                        ? "bg-blue-200 text-gray-900 dark:bg-neutral-700 dark:text-white"
+                        : "text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
+                    }`
+                    }
                   >
                     <House />
                     Spice Cabinet
                   </NavLink>
                 </li>
-
                 <li>
                   <NavLink
                     to="/create"
-                    className="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+                    className={({ isActive }) =>
+                      `flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg
+                      ${
+                        isActive
+                          ? "bg-blue-200 text-gray-900 dark:bg-neutral-700 dark:text-white"
+                          : "text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
+                      }`
+                    }
                   >
                     <SquarePlus />
                     Create new Spice
@@ -51,7 +64,14 @@ function NavBar() {
                 <li>
                   <NavLink
                     to="shopping"
-                    className="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+                    className={({ isActive }) =>
+                      `flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg
+                      ${
+                        isActive
+                          ? "bg-blue-200 text-gray-900 dark:bg-neutral-700 dark:text-white"
+                          : "text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
+                      }`
+                    }
                   >
                     <ShoppingBasket />
                     Shopping Lists
@@ -68,7 +88,14 @@ function NavBar() {
             <NavLink
               to="/"
               end
-              className="flex items-center gap-x-3.5 py-2 px-2.5 bg-gray-100 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-700 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-white"
+              className={({ isActive }) =>
+                `flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg
+                ${
+                  isActive
+                    ? "bg-blue-200 text-gray-900 dark:bg-neutral-700 dark:text-white"
+                    : "text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
+                }`
+              }
             >
               <House />
               Spice Cabinet
@@ -78,8 +105,16 @@ function NavBar() {
           <li>
             <NavLink
               to="/create"
-              className="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+              className={({ isActive }) =>
+                `flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg
+                ${
+                  isActive
+                    ? "bg-blue-200 text-gray-900 dark:bg-neutral-700 dark:text-white"
+                    : "text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
+                }`
+              }
             >
+              {" "}
               <SquarePlus />
               Create new Spice
             </NavLink>
@@ -87,7 +122,14 @@ function NavBar() {
           <li>
             <NavLink
               to="shopping"
-              className="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700 dark:text-neutral-200"
+              className={({ isActive }) =>
+                `flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg
+                ${
+                  isActive
+                    ? "bg-blue-200 text-gray-900 dark:bg-neutral-700 dark:text-white"
+                    : "text-gray-800 hover:bg-gray-100 dark:text-neutral-200 dark:hover:bg-neutral-700"
+                }`
+              }
             >
               <ShoppingBasket />
               Shopping Lists
