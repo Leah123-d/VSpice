@@ -128,10 +128,6 @@ function App() {
     <div>
       <NavBar />
       <Routes>
-        <Route path="/" element={<SpiceCabinet storedSpices={storedSpices} getSpices={getSpices}/>} />
-        <Route
-          path="view"
-          element={<ViewSpice viewSpice={viewSpice}/>}/>
         <Route
           path="/"
           element={
