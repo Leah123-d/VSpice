@@ -129,7 +129,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route
-          path="/"
+          path="/spices"
           element={
             <SpiceCabinet
               storedSpices={storedSpices}
@@ -139,7 +139,7 @@ function App() {
           }
         />
         <Route
-          path="view"
+          path="/spices/:id"
           element={
             <ViewSpice
               viewSpice={viewSpice}

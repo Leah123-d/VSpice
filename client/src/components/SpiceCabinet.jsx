@@ -74,7 +74,10 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                   >
                     <div className="flex items-center gap-x-1">
                       Name
-                      <button onClick={() => sortSpices("name")} aria-label="sort">
+                      <button
+                        onClick={() => sortSpices("name")}
+                        aria-label="sort"
+                      >
                         {sortKey === "name" ? (
                           isAscending ? (
                             <ChevronUp size={16} />
@@ -93,7 +96,10 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                   >
                     <div className="flex items-center gap-x-1">
                       Brand
-                      <button onClick={() => sortSpices("brand")} aria-label="sort">
+                      <button
+                        onClick={() => sortSpices("brand")}
+                        aria-label="sort"
+                      >
                         {sortKey === "brand" ? (
                           isAscending ? (
                             <ChevronUp size={16} />
@@ -118,7 +124,10 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                   >
                     <div className="flex items-center gap-x-1">
                       Current weight
-                      <button onClick={() => sortSpices("current_weight")} aria-label="sort">
+                      <button
+                        onClick={() => sortSpices("current_weight")}
+                        aria-label="sort"
+                      >
                         {sortKey === "current_weight" ? (
                           isAscending ? (
                             <ChevronUp size={16} />
@@ -143,7 +152,10 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                   >
                     <div className="flex items-center gap-x-1">
                       Last Purchased
-                      <button onClick={() => sortSpices("last_purchased")} aria-label="sort">
+                      <button
+                        onClick={() => sortSpices("last_purchased")}
+                        aria-label="sort"
+                      >
                         {sortKey === "last_purchased" ? (
                           isAscending ? (
                             <ChevronUp size={16} />
@@ -181,10 +193,12 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                         {spice.brand}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                        {spice.full_weight ? spice.full_weight + " g" : ""} 
+                        {spice.full_weight ? spice.full_weight + " g" : ""}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
-                        {spice.current_weight ? spice.current_weight + " g" : ""} 
+                        {spice.current_weight
+                          ? spice.current_weight + " g"
+                          : ""}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                         {formatDate(spice.expiration_date)}
@@ -197,8 +211,8 @@ function SpiceCabinet({ storedSpices, getSpices, deleteSpice }) {
                           aria-label="View-one-spice"
                           onClick={async () => {
                             await getSpices(spice.id);
-                            navigate("/view");
-                          } }
+                            navigate(`/spices/${spice.id}`)
+                          }}
                           type="button"
                           className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400"
                         >
