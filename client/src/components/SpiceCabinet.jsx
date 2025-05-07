@@ -55,13 +55,19 @@ function SpiceCabinet({
     setDisplaySpices(sorted);
   }
 
-  const source = Array.isArray(searchResult) ? searchResult : displaySpices;
+  const source = Array.isArray(searchResult)
+  ? searchResult
+  : Array.isArray(displaySpices)
+  ? displaySpices
+  : [];
 
-  const filterSpices = storedSpices.filter((spice) =>
-    source.some((result) =>
-      spice.name.toLowerCase().includes(result.name.toLowerCase())
+  const filterSpices = storedSpices
+  ? storedSpices.filter((spice) =>
+      source.some((result) =>
+        spice.name.toLowerCase().includes(result.name.toLowerCase())
+      )
     )
-  );
+  : [];
 
   return (
     <div className="flex flex-col">
@@ -227,7 +233,7 @@ function SpiceCabinet({
                           aria-label="View-one-spice"
                           onClick={async () => {
                             await getSpices(spice.id);
-                            navigate(`/spices/${spice.id}`);
+                            navigate(`/${spice.id}`);
                           }}
                           type="button"
                           className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 focus:outline-hidden focus:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:text-blue-400"
