@@ -21,12 +21,14 @@ function SpiceCabinet({
   const [isAscending, setIsAscending] = useState(true);
   const [sortKey, setSortKey] = useState("name");
   const [isDeleted, setIsDeleted] = useState(false);
+  const [deleteMessageLocation, setDeleteMessageLocation] = useState({x:0, y:0});
 
+  
   useEffect(() => {
     if (isDeleted) {
       const timer = setTimeout(() => {
         setIsDeleted(false);
-      }, 3000);
+      }, 2000);
       return () => clearTimeout(timer);
     }
     setDisplaySpices(storedSpices);
@@ -76,6 +78,12 @@ function SpiceCabinet({
           className="mt-2 bg-teal-100 border border-teal-200 text-sm text-teal-800 rounded-lg p-4 dark:bg-teal-800/10 dark:border-teal-900 dark:text-teal-500"
           role="alert"
           aria-labelledby="hs-soft-color-success-label"
+          style={{
+            top: deleteMessageLocation.y + 10,
+            left: deleteMessageLocation.x - 200,
+            position:"absolute",
+            zIndex: 50,
+          }}
         >
           <span id="hs-soft-color-success-label" className="font-bold">
             Spice succesfully deleted!
@@ -244,7 +252,9 @@ function SpiceCabinet({
                       <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                         <button
                           aria-label="Delete"
-                          onClick={async () => {
+                          onClick={async (e) => {
+                            const mouse = {x: e.clientX, y: e.clientY };
+                            setDeleteMessageLocation(mouse);
                             await deleteSpice(spice.id);
                             setIsDeleted(true);
                           }}
