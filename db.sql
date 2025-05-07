@@ -56,7 +56,6 @@ CREATE TABLE public.spices (
 
 CREATE TABLE public.shopping_lists(
     id SERIAL PRIMARY KEY,
-    spice_id INTEGER REFERENCES public.spices(id),
     user_id INTEGER REFERENCES public.users(id) NOT NULL,
     shopping_date DATE,
     comments TEXT,
