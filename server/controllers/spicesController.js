@@ -18,7 +18,9 @@ export const getSpice = async (req, res) => {
 
 export const getSpices = async (req, res) => {
   try {
-    const result = await dbConnection.query(`SELECT * FROM spices`);
+    const result = await dbConnection.query(
+      `SELECT * FROM spices ORDER BY created_at DESC`
+    );
     res.json(result.rows);
   } catch (error) {
     console.error("spices not found", error);
@@ -55,7 +57,7 @@ export const createSpice = async (req, res) => {
       ]
     );
 
-    res.json({ message: `new spice ${result.rows[0].name} was added` });
+    res.json(result.rows[0]);
   } catch (error) {
     console.error("Error creating new spice: ", error);
   }
@@ -87,8 +89,11 @@ export const updateSpice = async (req, res) => {
 
 export const deleteSpice = async (req, res) => {
   const { id } = req.params;
-  const { name } = req.body;
   try {
+    await dbConnection.query(
+      `DELETE FROM shopping_list_items WHERE spice_id = $1`,
+      [id]
+    );
     const result = await dbConnection.query(
       `DELETE FROM spices WHERE id = $1 RETURNING *`,
       [id]
@@ -96,9 +101,9 @@ export const deleteSpice = async (req, res) => {
     if (result.rowCount === 0) {
       return res.send({ error: "spice not found" });
     }
-    res.send(`spice: ${name} has been deleted`);
+    res.send(`spice: ${id} has been deleted`);
   } catch (error) {
-    console.error(`error deleting spice ${name}`, error);
+    console.error(`error deleting spice ${id}`, error);
     res
       .status(500)
       .send({ error: "internal server error while deleting spice." });
@@ -106,12 +111,13 @@ export const deleteSpice = async (req, res) => {
 };
 
 export const searchSpices = async (req, res) => {
-
-  const { name } = req.params.name.toLowerCase();
-
+  const { name } = req.params;
+  if (!name) {
+    return res.status(400).send({ error: "spice name is required" });
+  }
   try {
     const result = await dbConnection.query(
-      `SELECT * FROM spices WHERE name =  $1`,
+      `SELECT * FROM spices WHERE name ILIKE $1`,
       [`%${name}%`]
     );
     if (result.rowCount === 0) {

@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import "./styles.css";
 import CreateSpice from "./components/CreateSpice";
 import ViewSpice from "./components/ViewSpice";
@@ -10,21 +11,22 @@ import EditSpice from "./components/EditSpice";
 import ErrorHandle from "./components/ErrorHandle";
 
 function App() {
-  const [spiceAnalyze, setSpiceAnalyze] = useState(null);
   const [errorHandle, setErrorHandle] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [storedSpices, setStoredSpices] = useState(null);
-  const [viewSpice, setViewSpice] =  useState(null);
   const [viewSpice, setViewSpice] = useState(null);
+  const [newSpiceId, setNewSpiceId] = useState(null);
+  const [searchResult, setSearchResult] = useState(null);
+  const navigate = useNavigate();
+
   const handleEditSpice = (id) => {
     console.log(id);
     getSpices(id);
-  }
+  };
   const createNewSpice = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    console.log("image submitted:", formData);
-
     try {
       const res = await fetch("vision/image", {
         method: "POST",
@@ -32,42 +34,33 @@ function App() {
       });
       const uploadData = await res.json();
       setIsLoading(true);
-
-      if (!uploadData.path) {
-        console.error("upload did not return valid path");
-      }
-
+      setIsAnalyzing(true);
       const analyzeRes = await fetch("/vision/analyze", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ imagePath: uploadData.path }),
+        body: JSON.stringify({ filename: uploadData.filename }),
       });
       const analyzeData = await analyzeRes.json();
       console.log("analyze response:", analyzeData);
-
-      const createSpiceInDB = console.log(
-        "inside create spice function",
-        analyzeData
-      );
-      await fetch("/spices", {
+      const postAnalyze = await fetch("/spices", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(analyzeData),
       });
-      const response = await fetch("/spices");
-      const newSpice = await response.json();
-      console.log("create spice response", newSpice);
-      setSpiceAnalyze(newSpice);
+      const newSpice = await postAnalyze.json();
+      console.log("new spice response", newSpice.id);
+      setNewSpiceId(newSpice.id);
       setIsLoading(false);
-      const data = await response.json();
-      console.log("create spice response", data);
+      setIsAnalyzing(false);
+      getSpices();
     } catch (error) {
       console.error("error handling spice creation: ", error);
       setErrorHandle(true);
+      navigate("/error");
     }
   };
   const getSpices = async (id) => {
@@ -79,15 +72,16 @@ function App() {
 
       const data = await res.json();
       console.log("fetched spices: ", data);
-      if(id){
-        setViewSpice(data);
-        return data;
-      }else{
       if (id) {
         setViewSpice(data);
         return data;
       } else {
-        setStoredSpices(data);
+        if (id) {
+          setViewSpice(data);
+          return data;
+        } else {
+          setStoredSpices(data);
+        }
       }
     } catch (error) {
       console.error("Error fetchig posts: ", error);
@@ -95,7 +89,7 @@ function App() {
       return [];
     }
   };
-  const editSpice = async(id, formData) => {
+  const editSpice = async (id, formData) => {
     try {
       const url = `/spices/${id}`;
       const response = await fetch(url, {
@@ -108,14 +102,26 @@ function App() {
       if (!response.ok) {
         throw new Error("update failed");
       }
-
       console.log("update successful!");
       getSpices(id);
+      getSpices();
     } catch (error) {
       console.log(error);
     }
+  };
+  const deleteSpice = async (id) => {
+    console.log("deleting spice with ID:", id);
+    try {
+      const url = `/spices/${id}`;
+      await fetch(url, { method: "DELETE" });
+      console.log(`spice with ${id} is successfully deleted!`);
+      getSpices();
+    } catch (error) {
+      console.log(error);
+      setErrorHandle(true);
+    }
+  };
 
-  }
   useEffect(() => {
     getSpices();
   }, []);
@@ -124,26 +130,51 @@ function App() {
     <div>
       <NavBar />
       <Routes>
-        <Route path="/" element={<SpiceCabinet storedSpices={storedSpices} getSpices={getSpices}/>} />
-        <Route
-          path="view"
-          element={<ViewSpice viewSpice={viewSpice}/>}
         <Route
           path="/"
           element={
-            <SpiceCabinet storedSpices={storedSpices} getSpices={getSpices} />
+            <SpiceCabinet
+              storedSpices={storedSpices}
+              getSpices={getSpices}
+              deleteSpice={deleteSpice}
+              searchResult={searchResult}
+              setSearchResult={setSearchResult}
+            />
           }
         />
         <Route
-          path="view"
-          element={<ViewSpice viewSpice={viewSpice} editSpice={editSpice} handleEditSpice={handleEditSpice} />}
+          path="/:id"
+          element={
+            <ViewSpice
+              viewSpice={viewSpice}
+              editSpice={editSpice}
+              handleEditSpice={handleEditSpice}
+            />
+          }
         />
         <Route
           path="create"
-          element={<CreateSpice createNewSpice={createNewSpice} />}
+          element={
+            <CreateSpice
+              createNewSpice={createNewSpice}
+              isLoading={isLoading}
+              isAnalyzing={isAnalyzing}
+              getSpices={getSpices}
+              setIsAnalyzing={setIsAnalyzing}
+              setIsLoading={setIsLoading}
+              newSpiceId={newSpiceId}
+            />
+          }
         />
-        <Route path="edit" element={<EditSpice editSpice={editSpice} viewSpice={viewSpice}/>} />
+        <Route
+          path="/edit"
+          element={<EditSpice editSpice={editSpice} viewSpice={viewSpice} />}
+        />
         <Route path="shopping" element={<ShoppingList />} />
+        <Route
+          path="/error"
+          element={<ErrorHandle errorHandle={errorHandle} />}
+        />
         <Route path="*" element={<ErrorHandle />} />
       </Routes>
     </div>

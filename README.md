@@ -97,7 +97,13 @@ CREATE DATABASE vspice;
 
 ---
 
-### 4. Configure Environment Variables
+### 4. AWS S3 Setup
+1. Sign-up for an [AWS account](https://portal.aws.amazon.com/billing/signup) 
+2. Create a user with admistrative access
+3. Follow steps to create the [S3 bucket](https://portal.aws.amazon.com/billing/signup)
+4. Complete instructions can be found [here](https://docs.aws.amazon.com/AmazonS3/latest/userguide/GetStartedWithS3.html)
+
+### 5. Configure Environment Variables
 
 - Navigate to `server/sample.env`
 - Copy the contents and create a `.env` file in the same directory:
@@ -115,9 +121,11 @@ cp sample.env .env
     2. During the sign-up process you'll be provided an API key
     3. Copy the key and paste it in your .env file created with the database setup.
 
+- Add your AWS S3 bucket credentials. All the information for the bucket can be found on your AWS account created in step 4. 
+
 ---
 
-### 5. Database Tables
+### 6. Database Tables
 
 - From within the `server` directory, run:
 
@@ -128,7 +136,7 @@ psql -U your_user -d vspice -f db.sql
 
 ---
 
-### 6. Run the App
+### 7. Run the App
 
 ### Backend
 
@@ -155,20 +163,19 @@ App will be available at: [http://localhost:5173](http://localhost:5173/)
 
 ## Features
 
-- Add, edit, and delete spices with custom images
+- Add, edit, and delete spices
 - Search and filter through your spice collection
-- Cloud image storage via AWS S3
-- AI-enhanced suggestions for spice pairings and descriptions using OpenAI
+- AI-enhanced suggestions for spice details using OpenAI
 - Responsive UI with Tailwind for mobile and desktop
-- Export shopping lists or create wishlists (Coming Soon)
 
 ---
 
 ## Future Plans
 
 - Implement soft deletion (trash bin with restore feature)
-- Integrate Google Places API for store/location-based spice suggestions
+- Integrate Google Places API for store/location-based
 - Add user authentication and private spice collections
+- Create shopping lists with export feature
 
 ## Preview
 ![spice-cabinet-walkthrough](https://github.com/user-attachments/assets/5f02d123-3b1d-481d-b12b-21a6f2890883)
