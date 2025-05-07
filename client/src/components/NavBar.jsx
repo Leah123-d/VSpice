@@ -30,7 +30,7 @@ function NavBar() {
               <ul className="space-y-1">
                 <li>
                   <NavLink
-                    to="/spices"
+                    to="/"
                     end
                     className={({ isActive }) =>
                       `flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg
@@ -86,7 +86,7 @@ function NavBar() {
         <ul className="flex">
           <li>
             <NavLink
-              to="/spices"
+              to="/"
               end
               className={({ isActive }) =>
                 `flex items-center gap-x-3.5 py-2 px-2.5 text-sm rounded-lg

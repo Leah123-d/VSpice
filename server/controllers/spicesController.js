@@ -18,7 +18,9 @@ export const getSpice = async (req, res) => {
 
 export const getSpices = async (req, res) => {
   try {
-    const result = await dbConnection.query(`SELECT * FROM spices ORDER BY created_at DESC`);
+    const result = await dbConnection.query(
+      `SELECT * FROM spices ORDER BY created_at DESC`
+    );
     res.json(result.rows);
   } catch (error) {
     console.error("spices not found", error);
@@ -88,6 +90,10 @@ export const updateSpice = async (req, res) => {
 export const deleteSpice = async (req, res) => {
   const { id } = req.params;
   try {
+    await dbConnection.query(
+      `DELETE FROM shopping_list_items WHERE spice_id = $1`,
+      [id]
+    );
     const result = await dbConnection.query(
       `DELETE FROM spices WHERE id = $1 RETURNING *`,
       [id]
@@ -106,8 +112,8 @@ export const deleteSpice = async (req, res) => {
 
 export const searchSpices = async (req, res) => {
   const { name } = req.params;
-  if(!name){
-    return res.status(400).send({error: "spice name is required"});
+  if (!name) {
+    return res.status(400).send({ error: "spice name is required" });
   }
   try {
     const result = await dbConnection.query(
