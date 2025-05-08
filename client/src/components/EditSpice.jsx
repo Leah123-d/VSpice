@@ -52,7 +52,7 @@ function EditSpice({ viewSpice, editSpice }) {
     });
     formRef.current.reset();
 
-    navigate("/spices/:id");
+    navigate("/:id");
   };
 
   function formChange(e) {
