@@ -1,5 +1,6 @@
 import { House, SquarePlus, ShoppingBasket } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { ContactRound } from "lucide-react";
 
 function NavBar() {
   return (
@@ -76,6 +77,10 @@ function NavBar() {
                     <ShoppingBasket />
                     Shopping Lists
                   </NavLink>
+                </li>
+                <li className="text-sm flex items-center gap-x-3.5 py-2 px-2.5 rounded-lg">
+                  <ContactRound />
+                  in/leah-p-tech
                 </li>
               </ul>
             </div>

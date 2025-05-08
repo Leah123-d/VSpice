@@ -17,13 +17,14 @@ function SpiceCabinet({
   setSearchResult,
 }) {
   const navigate = useNavigate();
-  const [displaySpices, setDisplaySpices] = useState([]);
   const [isAscending, setIsAscending] = useState(true);
   const [sortKey, setSortKey] = useState("name");
   const [isDeleted, setIsDeleted] = useState(false);
-  const [deleteMessageLocation, setDeleteMessageLocation] = useState({x:0, y:0});
+  const [deleteMessageLocation, setDeleteMessageLocation] = useState({
+    x: 0,
+    y: 0,
+  });
 
-  
   useEffect(() => {
     if (isDeleted) {
       const timer = setTimeout(() => {
@@ -31,45 +32,36 @@ function SpiceCabinet({
       }, 2000);
       return () => clearTimeout(timer);
     }
-    setDisplaySpices(storedSpices);
-  }, [isDeleted, storedSpices]);
+  }, [isDeleted]);
 
   function formatDate(date) {
     return date ? new Date(date).toISOString().split("T")[0] : "-";
   }
 
   function sortSpices(key) {
-    if (sortKey === key) {
-      setIsAscending(!isAscending);
-    } else {
-      setSortKey(key);
-      setIsAscending(true);
-    }
-    const sorted = [...displaySpices].sort((a, b) => {
+    const newIsAscending = sortKey === key ? !isAscending : true;
+    setSortKey(key);
+    setIsAscending(newIsAscending);
+
+    const spices = Array.isArray(searchResult)
+      ? [...searchResult]
+      : [...storedSpices];
+
+    const sorted = spices.sort((a, b) => {
       const aVal = a[key]?.toString().toLowerCase() ?? "";
       const bVal = b[key]?.toString().toLowerCase() ?? "";
 
-      if (aVal < bVal) return isAscending ? -1 : 1;
-      if (aVal > bVal) return isAscending ? 1 : -1;
-
+      if (aVal < bVal) return newIsAscending ? -1 : 1;
+      if (aVal > bVal) return newIsAscending ? 1 : -1;
       return 0;
     });
-    setDisplaySpices(sorted);
+
+    setSearchResult(sorted);
   }
 
-  const source = Array.isArray(searchResult)
-  ? searchResult
-  : Array.isArray(displaySpices)
-  ? displaySpices
-  : [];
-
-  const filterSpices = storedSpices
-  ? storedSpices.filter((spice) =>
-      source.some((result) =>
-        spice.name.toLowerCase().includes(result.name.toLowerCase())
-      )
-    )
-  : [];
+  const spicesToRender = Array.isArray(searchResult)
+    ? searchResult
+    : storedSpices ?? [];
 
   return (
     <div className="flex flex-col">
@@ -81,7 +73,7 @@ function SpiceCabinet({
           style={{
             top: deleteMessageLocation.y + 10,
             left: deleteMessageLocation.x - 200,
-            position:"absolute",
+            position: "absolute",
             zIndex: 50,
           }}
         >
@@ -213,8 +205,8 @@ function SpiceCabinet({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                {filterSpices &&
-                  filterSpices.map((spice) => (
+                {spicesToRender &&
+                  spicesToRender.map((spice) => (
                     <tr key={spice.id}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-neutral-200">
                         {spice.name}
@@ -253,7 +245,7 @@ function SpiceCabinet({
                         <button
                           aria-label="Delete"
                           onClick={async (e) => {
-                            const mouse = {x: e.clientX, y: e.clientY };
+                            const mouse = { x: e.clientX, y: e.clientY };
                             setDeleteMessageLocation(mouse);
                             await deleteSpice(spice.id);
                             setIsDeleted(true);
